@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Donkey.Common.Commands;
+using Donkey.Common;
+using Donkey.Common.Answers;
+
+namespace Donkey.Server.CommandProcessors
+{
+    [CommandProcessorInfo(CommandType = CommandType.Auth)]
+    public class AuthCommandProcessor : BaseCommandProcessor
+    {
+        public AuthCommandProcessor(ClientCommand command)
+            : base(command)
+        {
+        }
+
+        protected override bool Process(GameServer server)
+        {
+            var result = true;
+            try
+            {
+                server.GetPlayer(Command.AuthData);
+            }
+            catch (GameServerException)
+            {
+                result = false;
+            }
+
+            Answer = new AuthAnswer(result);
+            return result;
+        }
+    }
+}

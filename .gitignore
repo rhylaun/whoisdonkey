@@ -296,3 +296,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+!build

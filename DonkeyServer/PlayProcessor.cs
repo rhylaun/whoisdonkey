@@ -14,6 +14,7 @@ namespace Donkey.Server
 		private IRoundRules _roundRules;
 		private AuthData _endRoundPlayer;
 		private GameMove _winningMove;
+		private int _denyDonkeyMoveInRounds = 0;
 
 		public PlayProcessor(Guid gameId)
 		{
@@ -32,7 +33,10 @@ namespace Donkey.Server
 				_history.Add(move);
 				_cardStack.Clear();
 				_roundRules = new UsualRoundRules();
+				if (_denyDonkeyMoveInRounds > 0)
+					_denyDonkeyMoveInRounds--;
 				_winningMove = null;
+				_endRoundPlayer = move.Player;
 				return true;
 			}
 
@@ -44,11 +48,15 @@ namespace Donkey.Server
 
 			if (_cardStack.IsEmpty && move.IsDonkeyMove())
 			{
+				if (_denyDonkeyMoveInRounds > 0)
+					return false;
+
 				_history.Add(move);
 				_cardStack.Push(move.Cards);
 				_endRoundPlayer = move.Player;
 
 				_roundRules = new DonkeyRoundRules();
+				_denyDonkeyMoveInRounds = 1;
 				return true;
 			}
 
@@ -58,8 +66,6 @@ namespace Donkey.Server
 				_history.Add(move);
 				if (move.MoveType == MoveType.Drop)
 					_cardStack.Push(move.Cards);
-				if (_roundRules.CanChangeEndRoundPlayer(move))
-					_endRoundPlayer = move.Player;
 				if (_roundRules.ChangeWinner(_winningMove, move))
 					_winningMove = move;
 			}

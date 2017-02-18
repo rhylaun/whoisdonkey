@@ -121,11 +121,14 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				if (!HasPlayer(gameMove.Player)) return false;
+				if (!HasPlayer(gameMove.Player))
+					return false;
 
-				if (CurrentTurnPlayer.AuthData != gameMove.Player) return false;
+				if (CurrentTurnPlayer.AuthData != gameMove.Player)
+					return false;
 
-				if (gameMove.MoveType == MoveType.Drop && !_cardSet.GetPlayerCardset(gameMove.Player).Contains(gameMove.Cards)) return false;
+				if (gameMove.MoveType == MoveType.Drop && !_cardSet.GetPlayerCardset(gameMove.Player).Contains(gameMove.Cards))
+					return false;
 
 				if (_moveProcessor.Append(gameMove))
 				{

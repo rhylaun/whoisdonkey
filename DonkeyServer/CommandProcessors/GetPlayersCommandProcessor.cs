@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Donkey.Common.Commands;
+﻿using Donkey.Common.Commands;
 using Donkey.Common;
 using Donkey.Common.Answers;
 
 namespace Donkey.Server.CommandProcessors
 {
-    [CommandProcessorInfo(CommandType = CommandType.GetPlayers)]
+	[CommandProcessorInfo(CommandType = CommandType.GetPlayers)]
     public class GetPlayersCommandProcessor : BaseCommandProcessor
     {
         public GetPlayersCommandProcessor(ClientCommand command)
@@ -24,7 +20,7 @@ namespace Donkey.Server.CommandProcessors
             {
                 players = server.GetPlayers().ToArray();
             }
-            catch (GameServerException ex)
+            catch (GameServerException)
             {
                 result = true;
             }

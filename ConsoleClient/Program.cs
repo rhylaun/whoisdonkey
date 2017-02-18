@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using Donkey.Client;
 using System.Threading;
-using Donkey.Common.Commands;
 using Donkey.Common;
-using Donkey.Common.Answers;
-using CommandLine;
 using Donkey.Common.ClientServer;
+using DonkeyAI;
 
 namespace ConsoleClient
 {
@@ -16,29 +14,20 @@ namespace ConsoleClient
 	{
 		static void Main(string[] args)
 		{
+			AIWorker aiWorker = null;
+
 			Console.Clear();
-			Thread.Sleep(3000);
-			var options = new Options();
-			var parser = new Parser();
-			var parseResult = parser.ParseArguments(args, options);
+			Console.Write("Enter server address: ");
+			var address = Console.ReadLine();
+			if (string.IsNullOrEmpty(address))
+				address = "127.0.0.1";
+			Console.Write("Enter login: ");
+			var login = Console.ReadLine();
+			Console.Write("Enter password: ");
+			var password = Console.ReadLine();
 
-			if (!parseResult || string.IsNullOrEmpty(options.Login))
-			{
-				Console.WriteLine("Attempt to parse parameters failed.");
-				Console.WriteLine("Please, enter requested data manually.");
-				Console.Write("Enter server address: ");
-				var address = Console.ReadLine();
-				Console.Write("Enter login: ");
-				var login = Console.ReadLine();
-				Console.Write("Enter password: ");
-				var password = Console.ReadLine();
-				options.Login = login;
-				options.Password = password;
-				options.Address = address;
-			}
-
-			Console.WriteLine("Connecting to {0} as [{1}]", options.Address, options.Login);
-			using (var client = new GameClient<TcpNetworkClient>(options.GetAuthData(), options.Address))
+			Console.WriteLine("Connecting to {0} as [{1}]", address, login);
+			using (var client = new GameClient<TcpNetworkClient>(new AuthData(login, password), address))
 			{
 				bool abort = false;
 				bool result = false;
@@ -69,6 +58,23 @@ namespace ConsoleClient
 
 						result = false;
 						message = string.Empty;
+
+						if (command.Equals("runai"))
+						{
+							if (aiWorker != null)
+								aiWorker.Stop();
+							aiWorker = AIManager.StartAI(client);
+							WriteToConsole(true, "AI started.");
+							continue;
+						}
+
+						if (command.Equals("stopai"))
+						{
+							if (aiWorker != null)
+								aiWorker.Stop();
+							WriteToConsole(true, "AI stopped.");
+							continue;
+						}
 
 						if (command.Equals("exit"))
 							abort = true;
@@ -216,14 +222,16 @@ namespace ConsoleClient
 					continue;
 				}
 
-				Card card;
-				if (Enum.TryParse<Card>(str, out card))
+				try
 				{
+					Card card = (Card)Enum.Parse(typeof(Card), str);
 					result.Add(card);
 					continue;
 				}
-
-				throw new ArgumentException("Can't parse some card");
+				catch
+				{
+					throw new ArgumentException("Can't parse some card");
+				}
 			}
 
 			return result;

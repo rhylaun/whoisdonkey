@@ -29,12 +29,7 @@ namespace Donkey.Server
 
 			return true;
 		}
-
-		public bool CanChangeEndRoundPlayer(GameMove move)
-		{
-			return move.MoveType == MoveType.Drop;
-		}
-
+		
 		public bool ChangeWinner(GameMove currentWinnerMove, GameMove pendingMove)
 		{
 			if (currentWinnerMove == null)

@@ -44,16 +44,7 @@ namespace Donkey.Common
 
 		public int GetValue()
 		{
-			if (Cards == null || Cards.Count == 0)
-				return 0;
-
-			if (!Cards.Any(x => x == Card.Joker))
-				return (int)Cards.First();
-
-			if (!Cards.All(x => x == Card.Joker))
-				return (int)Card.Joker;
-
-			return (int)(Cards.Where(x => x != Card.Joker).First());
+			return CardListValueHelper.GetValue(Cards);
 		}
 	}
 

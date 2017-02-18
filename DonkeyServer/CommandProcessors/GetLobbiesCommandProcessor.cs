@@ -24,7 +24,7 @@ namespace Donkey.Server.CommandProcessors
             {
                 lobbies = server.GetLobbies().ToArray();
             }
-            catch (GameServerException ex)
+            catch (GameServerException)
             {
                 result = true;
             }

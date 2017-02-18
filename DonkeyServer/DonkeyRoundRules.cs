@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Donkey.Common;
 
 namespace Donkey.Server
@@ -20,12 +18,7 @@ namespace Donkey.Server
 
 			return true;
 		}
-
-		public bool CanChangeEndRoundPlayer(GameMove move)
-		{
-			return false;
-		}
-
+		
 		public bool ChangeWinner(GameMove currentWinnerMove, GameMove pendingMove)
 		{
 			if (currentWinnerMove == null)

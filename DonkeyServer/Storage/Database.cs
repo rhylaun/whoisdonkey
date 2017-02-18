@@ -166,7 +166,7 @@ namespace Donkey.Server.Storage
 					connection.Close();
 				}
 			}
-			catch (SQLiteException ex)
+			catch (SQLiteException)
 			{
 				Console.WriteLine($"Save file corrupted: {gameId}");
 				return false;

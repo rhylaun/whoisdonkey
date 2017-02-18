@@ -76,6 +76,7 @@
     <Compile Include="Answers\GameMoveAnswer.cs" />
     <Compile Include="Answers\StartGameAnswer.cs" />
     <Compile Include="AuthData.cs" />
+    <Compile Include="CardListValueHelper.cs" />
     <Compile Include="CardStack.cs" />
     <Compile Include="ClientServer\TcpNetworkClient.cs" />
     <Compile Include="Commands\GetCardSetCommand.cs" />
@@ -113,6 +114,9 @@
     <Compile Include="StatisticRecord.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y /B $(TargetDir)\$(ProjectName).dll $(SolutionDir)\UnityClient\WhoIsDonkey\Assets\Externals\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

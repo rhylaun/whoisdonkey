@@ -84,6 +84,7 @@
     <Compile Include="CommandProcessors\BaseCommandProcessor.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="CommandProcessors\CommandProcessorFabric.cs" />
+    <Compile Include="CommandProcessors\CurrentPlayerCommandProcessor.cs" />
     <Compile Include="CommandProcessors\GetHistoryCommandProcessor.cs" />
     <Compile Include="CommandProcessors\GameMoveCommandProcessor.cs" />
     <Compile Include="CommandProcessors\GetCardSetCommandProcessor.cs" />

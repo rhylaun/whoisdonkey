@@ -8,13 +8,17 @@ namespace Donkey.Server
 	{
 		public bool ValidateMove(GameMove pendingMove, List<Card> topCards)
 		{
-			if (pendingMove.MoveType == MoveType.Pass) return false;
-			if (pendingMove.MoveType == MoveType.Clear) return true;
+			if (pendingMove.MoveType == MoveType.Pass)
+				return false;
+			if (pendingMove.MoveType == MoveType.Clear)
+				return true;
 
 			//Остался только вариант с хода картами
-			if (pendingMove.Cards.Count != 1) return false;
+			if (pendingMove.Cards.Count != 1)
+				return false;
 			//Проверка на дурака, вдруг кто второго осла в колоду подкинет
-			if (pendingMove.Cards[0] == Card.Donkey) return false;
+			if (pendingMove.Cards[0] == Card.Donkey)
+				return false;
 
 			return true;
 		}

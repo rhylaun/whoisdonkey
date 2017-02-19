@@ -42,8 +42,13 @@ namespace DonkeyAI
 		{
 			while (!_abort)
 			{
-				Thread.Sleep(200);
-				_client.Update();
+				Thread.Sleep(500);
+				if (!_client.IsMyTurn)
+					continue;
+
+				if (!_client.Update())
+					continue;
+
 				var cardsInHand = _client.GetCards();
 				var moveList = _client.GetHistory(_client.CurrentGameStep);
 

@@ -5,7 +5,6 @@ using System.Net;
 using Donkey.Common.ClientServer;
 using Donkey.Common.Commands;
 using Donkey.Common.Answers;
-using System.Collections;
 using System.Threading;
 
 namespace Donkey.Client
@@ -21,14 +20,24 @@ namespace Donkey.Client
 		private readonly Thread _checkStateThread;
 
 		private PlayerCardSet _cardSet;
+		private string _currentTurnPlayerName = string.Empty;
 
 		public AuthData AuthData { get; private set; }
 		private PlayerState _state;
 		public PlayerState State
 		{
-			get { lock (_checkLocker) return _state; }
-			private set { lock (_checkLocker) _state = value; }
+			get
+			{
+				lock (_checkLocker)
+					  return _state;
+			}
+			private set
+			{
+				lock (_checkLocker)
+					_state = value;
+			}
 		}
+
 		public int CurrentGameStep
 		{
 			get
@@ -38,6 +47,28 @@ namespace Donkey.Client
 				if (_history.Count == 0)
 					return -1;
 				return _history.Last().Index;
+			}
+		}
+
+		public bool IsMyTurn
+		{
+			get
+			{
+				lock (_checkLocker)
+				{
+					return AuthData.Login.Equals(_currentTurnPlayerName, StringComparison.InvariantCulture);
+				}
+			}
+		}
+
+		public string CurrentTurnPlayer
+		{
+			get
+			{
+				lock (_checkLocker)
+				{
+					return _currentTurnPlayerName;
+				}
 			}
 		}
 
@@ -62,8 +93,14 @@ namespace Donkey.Client
 			{
 				try
 				{
-					CheckState();
-					Thread.Sleep(2000);
+					Thread.Sleep(1000);
+					if (!CheckState())
+						continue;
+
+					if (State != PlayerState.Game)
+						continue;
+
+					CheckCurrentPlayer();
 				}
 				catch (Exception ex)
 				{
@@ -95,6 +132,15 @@ namespace Donkey.Client
 			if (answer.Success)
 				State = ((GetStateAnswer)answer).State;
 
+			return answer.Success;
+		}
+
+		private bool CheckCurrentPlayer()
+		{
+			var command = new GetCurrentPlayerCommand(AuthData);
+			var answer = SendCommand(command);
+			if (answer.Success)
+				_currentTurnPlayerName = ((CurrentPlayerAnswer)answer).CurrentPlayerName;
 			return answer.Success;
 		}
 

@@ -29,7 +29,7 @@ namespace Donkey.Server
 		public readonly Guid Id;
 
 		private Player _currentTurnPlayer;
-		protected Player CurrentTurnPlayer
+		public Player CurrentTurnPlayer
 		{
 			get
 			{
@@ -45,7 +45,7 @@ namespace Donkey.Server
 			Id = Guid.NewGuid();
 			Name = lobby.Name;
 			_database = database;
-			_moveProcessor = new PlayProcessor(Id);
+			_moveProcessor = new PlayProcessor(Id);			
 			_players = new List<Player>(lobby.GetPlayers());
 			_cardSet = CardShuffler.GetCardSet(_players.Count);
 			_cardSet.BindPlayers(_players.Select(x => x.AuthData).ToArray());

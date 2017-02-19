@@ -1,8 +1,6 @@
 ﻿using Donkey.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Donkey.Client
 {
@@ -11,6 +9,9 @@ namespace Donkey.Client
 		AuthData AuthData { get; }
 		PlayerState State { get; }
 		int CurrentGameStep { get; }
+		bool IsMyTurn { get; }
+		string CurrentTurnPlayer { get; }
+
 		List<Card> GetCards();
 		GameMove[] GetHistory(int fromIndex);
         GameMove[] GetHistory();

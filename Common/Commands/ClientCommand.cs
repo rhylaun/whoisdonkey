@@ -34,6 +34,7 @@ namespace Donkey.Common.Commands
         JoinGame,
         Register,
         GetState,
-        GetCardSet
+        GetCardSet,
+		GetCurrentPlayer
     }
 }

@@ -56,7 +56,7 @@ namespace Donkey.Server
 				_endRoundPlayer = move.Player;
 
 				_roundRules = new DonkeyRoundRules();
-				_denyDonkeyMoveInRounds = 1;
+				_denyDonkeyMoveInRounds = 2;
 				return true;
 			}
 

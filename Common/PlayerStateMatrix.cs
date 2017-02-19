@@ -21,11 +21,12 @@ namespace Donkey.Common
                     _array[state][cmd] = PlayerState.Error;
 
                 _array[state][CommandType.KeepAlive] = state;  //команда keepalive сохраняет состояние клиента
-                _array[state][CommandType.GetState] = state;  //команда keepalive сохраняет состояние клиента
+                _array[state][CommandType.GetState] = state;  //команда getstate сохраняет состояние клиента
                 _array[state][CommandType.GetLobbies] = state; //команда getlobbies сохраняет состояние клиента
                 _array[state][CommandType.GetPlayers] = state; //команда getplayers сохраняет состояние клиента
                 _array[state][CommandType.GetGames] = state;   //команда getgames сохраняет состояние клиента
-            }
+				_array[state][CommandType.GetCurrentPlayer] = state;   //команда getcurrentplayer сохраняет состояние клиента
+			}
 
             _array[PlayerState.Offline][CommandType.Auth] = PlayerState.Online;
             _array[PlayerState.Offline][CommandType.Register] = PlayerState.Offline;

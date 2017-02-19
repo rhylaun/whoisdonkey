@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Donkey.Common
 {
@@ -22,7 +20,7 @@ namespace Donkey.Common
 
 		public bool IsDonkeyMove()
 		{
-			return MoveType == Common.MoveType.Drop && Cards.Count == 1 && Cards[0] == Card.Donkey;
+			return MoveType == MoveType.Drop && Cards.Count == 1 && Cards[0] == Card.Donkey;
 		}
 
 		public GameMove GetCopy()

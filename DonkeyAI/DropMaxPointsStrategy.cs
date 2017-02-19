@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Donkey.Common;
 
 namespace DonkeyAI
@@ -19,47 +17,28 @@ namespace DonkeyAI
 
 		private GameMove CalculateUsualRound(List<Card> cardsInHand, List<Card> cardsOnTable, bool canDropDonkey)
 		{
-			if (canDropDonkey && cardsInHand.Contains(Card.Donkey))
+			var resultMove = new GameMove();
+			resultMove.MoveType = MoveType.Drop;
+			if (cardsOnTable.Count > 0)
 			{
-				var donkeyMove = new GameMove() { MoveType = MoveType.Drop };
-				donkeyMove.Cards.Add(Card.Donkey);
-				return donkeyMove;
-			}
+				var acceptableList = FindAcceptableDrop(cardsInHand, cardsOnTable);
+				if (acceptableList.Count == 0)
+					return new GameMove() { MoveType = MoveType.Pass };
 
-			var tableCardsValue = CardListValueHelper.GetValue(cardsOnTable);
-			var tableCardsCount = cardsOnTable.Count;
-
-			var groupedCards = new Dictionary<Card, int>();
-			foreach (var card in cardsInHand)
-				if (groupedCards.ContainsKey(card))
-					groupedCards[card] += 1;
-				else
-					groupedCards[card] = 1;
-
-			var resultMove = new GameMove() { MoveType = MoveType.Pass };
-			var moveValue = tableCardsValue;
-
-			foreach (var card in groupedCards.Keys)
-			{
-				if (card == Card.Donkey)
-					continue;
-
-				if ((int)card <= moveValue)
-					continue;
-
-				if (groupedCards[card] >= tableCardsCount && (int)card > moveValue)
-				{
-					resultMove.MoveType = MoveType.Drop;
-					moveValue = (int)card;
-				}
-			}
-
-			if (resultMove.MoveType == MoveType.Pass)
+				
+				resultMove.Cards = acceptableList;
 				return resultMove;
+			}
 
-			for (int i = 0; i < tableCardsCount; i++)
-				resultMove.Cards.Add((Card)moveValue);
+			if (cardsInHand.Contains(Card.Donkey) && canDropDonkey)
+			{
+				var list = new List<Card> { Card.Donkey };
+				resultMove.Cards = list;
+				return resultMove;
+			}
 
+			var maxList = FindMaxDrop(cardsInHand);
+			resultMove.Cards = maxList;
 			return resultMove;
 		}
 
@@ -69,6 +48,57 @@ namespace DonkeyAI
 			var resultMove = new GameMove() { MoveType = MoveType.Drop };
 			resultMove.Cards.Add(minCard);
 			return resultMove;
+		}
+		
+		private List<Card> FindAcceptableDrop(List<Card> cardsInHand, List<Card> cardsOnTable)
+		{
+			var sorted = GetSortedCards(cardsInHand);
+			var valueOnTable = CardListValueHelper.GetValue(cardsOnTable);
+			foreach (var key in sorted.Keys)
+			{
+				if ((int)key <= valueOnTable || sorted[key] < cardsOnTable.Count)
+					continue;
+				var result = new List<Card>();
+				for (int i = 0; i < cardsOnTable.Count; i++)
+					result.Add(key);
+				return result;
+			}
+
+			return new List<Card>();
+		}
+
+		private Dictionary<Card, int> GetSortedCards(List<Card> cards)
+		{
+			var sorted = new Dictionary<Card, int>();
+			foreach (var c in cards)
+				if (sorted.ContainsKey(c))
+					sorted[c] += 1;
+				else
+					sorted[c] = 1;
+			return sorted;
+		}
+
+		private List<Card> FindMaxDrop(List<Card> cards)
+		{
+			var sorted = GetSortedCards(cards);
+
+			var max = 0;
+			var result = new List<Card>();
+
+			foreach (var key in sorted.Keys)
+			{
+				var count = sorted[key] > 3 ? 3 : sorted[key];
+				var current = (int)key * count;
+				if (max > current)
+					continue;
+
+				max = current;
+				result.Clear();
+				for (int i = 0; i < count; i++)
+					result.Add(key);
+			}
+
+			return result;
 		}
 	}
 }

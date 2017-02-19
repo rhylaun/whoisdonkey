@@ -50,7 +50,23 @@ namespace Donkey.Client
             }
         }
 
-        public bool Auth()
+		public bool IsMyTurn
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		public string CurrentTurnPlayer
+		{
+			get
+			{
+				return AuthData.Login;
+			}
+		}
+
+		public bool Auth()
         {
             _stateMachine.ApplyCommandType(CommandType.Auth);
             return true;

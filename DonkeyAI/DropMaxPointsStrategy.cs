@@ -37,7 +37,7 @@ namespace DonkeyAI
 				return resultMove;
 			}
 
-			var maxList = FindMaxDrop(cardsInHand);
+			var maxList = FindMaxDrop(cardsInHand, true);
 			resultMove.Cards = maxList;
 			return resultMove;
 		}
@@ -78,7 +78,7 @@ namespace DonkeyAI
 			return sorted;
 		}
 
-		private List<Card> FindMaxDrop(List<Card> cards)
+		private List<Card> FindMaxDrop(List<Card> cards, bool ignoreDonkey)
 		{
 			var sorted = GetSortedCards(cards);
 
@@ -87,6 +87,9 @@ namespace DonkeyAI
 
 			foreach (var key in sorted.Keys)
 			{
+				if (ignoreDonkey && key == Card.Donkey)
+					continue;
+
 				var count = sorted[key] > 3 ? 3 : sorted[key];
 				var current = (int)key * count;
 				if (max > current)

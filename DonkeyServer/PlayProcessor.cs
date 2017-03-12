@@ -93,6 +93,9 @@ namespace Donkey.Server
 
 		public GameMove GenerateMove(AuthData player, MoveType moveType, List<Card> cards)
 		{
+			var index = 0;
+			if (_history.Count > 0)
+				index = _history.Last().Index + 1;
 			var result = new GameMove()
 			{
 				Cards = cards,
@@ -100,7 +103,7 @@ namespace Donkey.Server
 				MoveType = moveType,
 				Player = player,
 				Date = DateTime.UtcNow,
-				Index = _history.Last().Index + 1
+				Index = index
 			};
 			return result;
 		}

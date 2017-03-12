@@ -45,21 +45,10 @@ namespace Donkey.Server
 			Id = Guid.NewGuid();
 			Name = lobby.Name;
 			_database = database;
-			_moveProcessor = new PlayProcessor(Id);			
+			_moveProcessor = new PlayProcessor(Id);
 			_players = new List<Player>(lobby.GetPlayers());
 			_cardSet = CardShuffler.GetCardSet(_players.Count);
 			_cardSet.BindPlayers(_players.Select(x => x.AuthData).ToArray());
-
-			var emptyMove = new GameMove()
-			{
-				GameId = Id,
-				Date = DateTime.UtcNow,
-				Index = 0,
-				MoveType = MoveType.Clear,
-				Player = _players.First().AuthData
-			};
-			_moveProcessor.Append(emptyMove);
-			_database.WriteGameMove(emptyMove);
 
 			foreach (var player in _players)
 			{
@@ -68,6 +57,10 @@ namespace Donkey.Server
 				_moveProcessor.Append(takeMove);
 				_database.WriteGameMove(takeMove);
 			}
+
+			var emptyMove = _moveProcessor.GenerateMove(_players.First().AuthData, MoveType.Clear, new List<Card>());
+			_moveProcessor.Append(emptyMove);
+			_database.WriteGameMove(emptyMove);
 		}
 
 		public void Start()

@@ -27,5 +27,6 @@ namespace Donkey.Client
 		bool Pass();
 		bool MakeMove(List<Card> cards);
 		bool Update();
+		StatisticRecord[] GetStatistics();
 	}
 }

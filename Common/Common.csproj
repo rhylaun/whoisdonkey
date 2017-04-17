@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Answers\GetStatisticAnswer.cs" />
     <Compile Include="Answers\AuthAnswer.cs" />
     <Compile Include="Answers\CurrentPlayerAnswer.cs" />
     <Compile Include="Answers\GetCardSetAnswer.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="CardListValueHelper.cs" />
     <Compile Include="CardStack.cs" />
     <Compile Include="ClientServer\TcpNetworkClient.cs" />
+    <Compile Include="Commands\GetStatisticCommand.cs" />
     <Compile Include="Commands\GetCardSetCommand.cs" />
     <Compile Include="Commands\GetCurrentPlayerCommand.cs" />
     <Compile Include="Commands\GetStateCommand.cs" />

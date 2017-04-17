@@ -35,6 +35,7 @@ namespace Donkey.Common.Commands
         Register,
         GetState,
         GetCardSet,
-		GetCurrentPlayer
+		GetCurrentPlayer,
+		GetStatistic
     }
 }

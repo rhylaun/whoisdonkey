@@ -262,8 +262,18 @@ namespace Donkey.Client
 		{
 			var command = new GetPlayersCommand(AuthData);
 			var result = SendCommand(command);
-			if (result.Success) return new List<string>(((GetPlayersAnswer)result).Players);
+			if (result.Success)
+				return new List<string>(((GetPlayersAnswer)result).Players);
 			return new List<string>();
+		}
+
+		public StatisticRecord[] GetStatistics()
+		{
+			var command = new GetStatisticCommand(AuthData);
+			var result = SendCommand(command);
+			if (result.Success)
+				return ((GetStatisticAnswer)result).Statistic;
+			return new StatisticRecord[0];
 		}
 	}
 }

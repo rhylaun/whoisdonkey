@@ -167,5 +167,10 @@ namespace Donkey.Client
 		{
 			return new List<string>() { "p1", "p2", "p3" };
 		}
+
+		public StatisticRecord[] GetStatistics()
+		{
+			return new StatisticRecord[] { new StatisticRecord("p1"), new StatisticRecord("p2"), new StatisticRecord("p3") };
+		}
 	}
 }

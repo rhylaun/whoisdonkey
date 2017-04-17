@@ -80,6 +80,7 @@
     <Compile Include="CardShuffler.cs" />
     <Compile Include="CommandCreator.cs" />
     <Compile Include="CommandProcessorInfoAttribute.cs" />
+    <Compile Include="CommandProcessors\GetStatisticCommandProcessor.cs" />
     <Compile Include="CommandProcessors\AuthCommandProcessor.cs" />
     <Compile Include="CommandProcessors\BaseCommandProcessor.cs" />
     <Compile Include="CommandParser.cs" />

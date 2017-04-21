@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Donkey.Common;
 using Donkey.Common.Commands;
+using System.Threading;
 
 namespace Donkey.Client
 {
@@ -11,6 +12,10 @@ namespace Donkey.Client
     {
         private readonly PlayerStateMachine _stateMachine = new PlayerStateMachine();
         private readonly List<string> _lobbies = new List<string>();
+
+		private string _currentPlayer = string.Empty;
+
+		private Thread _changePlayerThread;
 
         public FakeGameClient()
         {
@@ -23,7 +28,11 @@ namespace Donkey.Client
             _history.Add(new GameMove() { MoveType = MoveType.Clear, Index = 3, });
 
             _cardSet = new PlayerCardSet();
-            _cardSet.Add(new List<Card>() { Card.Donkey, Card.One, Card.Nine, Card.Nine, Card.Five });
+            _cardSet.Add(new List<Card>() { Card.Donkey, Card.One, Card.Two, Card.Three, Card.Four, Card.Five, Card.Six,
+				Card.Seven, Card.Eight, Card.Nine, Card.Ten, Card.Thirteen, Card.Joker });
+			_currentPlayer = AuthData.Login;
+			_changePlayerThread = new Thread(RotatePlayer);
+			_changePlayerThread.Start();
         }
 
         public AuthData AuthData
@@ -54,7 +63,7 @@ namespace Donkey.Client
 		{
 			get
 			{
-				return true;
+				return _currentPlayer == AuthData.Login;
 			}
 		}
 
@@ -62,7 +71,7 @@ namespace Donkey.Client
 		{
 			get
 			{
-				return AuthData.Login;
+				return _currentPlayer;
 			}
 		}
 
@@ -165,21 +174,43 @@ namespace Donkey.Client
 
 		public List<string> GetPlayers()
 		{
-			return new List<string>() { "Player1", "Player2", "Player3" };
+			var list = new List<string>();
+			for (int i = 0; i < 8; i++)
+			{
+				list.Add("Player" + i);
+			}
+			list.Add(this.AuthData.Login);
+			return list;
 		}
 
 		public StatisticRecord[] GetStatistics()
 		{
-			var scores = new StatisticRecord[3];
+			var scores = new StatisticRecord[8+1];
 			var rand = new Random(5);
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 8; i++)
 			{
 				scores[i] = new StatisticRecord("Player" + i);
 				scores[i].FinishWithDonkey = Convert.ToUInt32(rand.Next(100));
 				scores[i].GamesPlayed = Convert.ToUInt32(rand.Next(100));
 				scores[i].TotalScore = Convert.ToUInt32(rand.Next(100));
 			}
+			scores[8] = new StatisticRecord(this.AuthData.Login);
+			scores[8].FinishWithDonkey = Convert.ToUInt32(rand.Next(100));
+			scores[8].GamesPlayed = Convert.ToUInt32(rand.Next(100));
+			scores[8].TotalScore = Convert.ToUInt32(rand.Next(100));
 			return scores;
+		}
+
+		private void RotatePlayer()
+		{
+			var counter = 0;
+			var players = GetPlayers();
+			while (true)
+			{
+				Thread.Sleep(5000);
+				_currentPlayer = players[counter++];
+				counter = counter % players.Count;
+			}
 		}
 	}
 }

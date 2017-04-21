@@ -10,13 +10,35 @@ public class PlayerTokensScript : MonoBehaviour
 	public float Inclination = 30;
 
 	private List<GameObject> _tokens = new List<GameObject>();
+	private Dictionary<string, GameObject> _nameToToken = new Dictionary<string, GameObject>();
 	private GameObject _holder;
+	private string _currentPlayer;
 
-	void Start ()
+	void Start()
 	{
 		CreatePlayerTokens();
 		SpreadTokens();
-		
+		_holder.transform.Rotate(Vector3.right, Inclination);
+		_currentPlayer = GameClientManager.Current.CurrentTurnPlayer;
+		RotateToToken(_nameToToken[_currentPlayer]);
+	}
+
+	void Update()
+	{
+		var player = GameClientManager.Current.CurrentTurnPlayer;
+		if (player == _currentPlayer)
+			return;
+
+		var token = _nameToToken[player];
+		RotateToToken(token);
+		_currentPlayer = player;
+		Debug.Log("Rotated to " + _currentPlayer);
+	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position, Radius);
 	}
 
 	private void CreatePlayerTokens()
@@ -32,7 +54,9 @@ public class PlayerTokensScript : MonoBehaviour
 			token.transform.Find("Username").GetComponent<TextMesh>().text = player;
 			token.transform.SetParent(_holder.transform);
 			_tokens.Add(token);
+			_nameToToken.Add(player, token);
 		}
+
 	}
 
 	private void SpreadTokens()
@@ -45,18 +69,23 @@ public class PlayerTokensScript : MonoBehaviour
 			transform.position = center + Vector3.down * Radius;
 			transform.RotateAround(center, Vector3.forward, anglePart * i);
 		}
-
-		_holder.transform.Rotate(Vector3.right, Inclination);
 	}
 
-	void Update ()
+	private void RotateToToken(GameObject token)
 	{
+		var angle = token.transform.rotation.eulerAngles.z;
 		
+		StartCoroutine(RotateCoroutine(angle));
 	}
 
-	void OnDrawGizmos()
+	private IEnumerator RotateCoroutine(float angle)
 	{
-		Gizmos.color = Color.green;
-		Gizmos.DrawWireSphere(transform.position, Radius);
+		var count = 20;
+		for(int i = 0; i < count; i++)
+		{
+			yield return new WaitForSeconds(1/count);
+			_holder.transform.Rotate(Vector3.forward, -angle/count, Space.Self);
+		}
 	}
+
 }

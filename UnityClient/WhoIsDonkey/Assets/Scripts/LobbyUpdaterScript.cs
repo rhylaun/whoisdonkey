@@ -11,12 +11,7 @@ public class LobbyUpdaterScript : MonoBehaviour
 
 	public void RefreshLobbies()
 	{
-#if UNITY_EDITOR
-		var lobbies = new List<string> { "LobbyName1", "LobbyName2", "LObbyName3" };
-#else
 		var lobbies = GameClientManager.Current.GetLobbies();
-#endif
-
 		ClearContent();
 		FillContent(lobbies);
 	}

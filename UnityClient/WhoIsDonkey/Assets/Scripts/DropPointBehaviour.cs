@@ -14,7 +14,11 @@ public class DropPointBehaviour : MonoBehaviour
 
     void Start()
     {
-        _dropPoint = GameObject.FindGameObjectWithTag("DropPoint");
+#if (UNITY_EDITOR)
+		GameClientManager.Current.JoinLobby("test_lobby");
+		GameClientManager.Current.StartGame();
+#endif
+		_dropPoint = GameObject.FindGameObjectWithTag("DropPoint");
         _coroutine = StartCoroutine(CheckerCoroutine());
     }
 
@@ -39,8 +43,10 @@ public class DropPointBehaviour : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(CheckInterval);
-            if (GameClientManager.Current == null) continue;
-            if (GameClientManager.Current.State != PlayerState.Game) continue;
+            if (GameClientManager.Current == null)
+				continue;
+            if (GameClientManager.Current.State != PlayerState.Game)
+				continue;
 
             if (history.Count <= currentStep)
             {
@@ -82,6 +88,7 @@ public class DropPointBehaviour : MonoBehaviour
         {
             var cardObj = CardHelper.CreateCardObject(card);
             CardHelper.DropCard(cardObj);
+			SetAproxRotattion(cardObj);
         }
     }
 
@@ -95,5 +102,12 @@ public class DropPointBehaviour : MonoBehaviour
             Destroy(droppedCards[i]);
         }
     }
+
+	private void SetAproxRotattion(GameObject cardObj)
+	{
+		cardObj.transform.LookAt(Camera.main.transform);
+		cardObj.transform.Rotate(90, 0, 0);
+		cardObj.transform.Rotate(0, Random.value * 90 - 45, 0);
+	}
 
 }

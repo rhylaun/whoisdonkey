@@ -13,19 +13,7 @@ public class LeadersboardUpdaterScript : MonoBehaviour
 
 	public void RefreshLeadersboard()
 	{
-#if UNITY_EDITOR
-		var scores = new StatisticRecord[3];
-		for (int i = 0; i < 3; i++)
-		{
-			scores[i] = new StatisticRecord("Player" + i);
-			scores[i].FinishWithDonkey = Convert.ToUInt32(UnityEngine.Random.value * 100);
-			scores[i].GamesPlayed = Convert.ToUInt32(UnityEngine.Random.value * 100);
-			scores[i].TotalScore = Convert.ToUInt32(UnityEngine.Random.value * 100);
-		}
-#else
 		var scores = GameClientManager.Current.GetStatistics();
-#endif
-
 		ClearContent();
 		FillContent(scores);
 	}

@@ -10,17 +10,19 @@ public class HandBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        var client = GameClientManager.Current;
-        if (client.State != PlayerState.Game) return;
+		var client = GameClientManager.Current;
+        if (client.State != PlayerState.Game)
+			return;
 
         var cards = client.GetCards();
-        if (cards.Count == _handList.Count) return;
+		if (cards.Count == _handList.Count)
+			return;
 
-        ClearHand();
+		ClearHand();
         foreach (var card in cards)
         {
-            var cardObj = CardHelper.CreateCardObject(card);
-            _handList.Add(cardObj);
+			var cardObj = CardHelper.CreateCardObject(card);
+			_handList.Add(cardObj);
             cardObj.transform.SetParent(transform.GetChild(0));
         }
     }

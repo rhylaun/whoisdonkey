@@ -20,7 +20,8 @@ public class StackBoardBehavior : MonoBehaviour
 
 	void Update()
 	{
-		if (_context.transform.childCount == _childCount) return;
+		if (_context.transform.childCount == _childCount)
+			return;
 
 		_childCount = _context.transform.childCount;
 		var childs = new Transform[_childCount];
@@ -42,7 +43,7 @@ public class StackBoardBehavior : MonoBehaviour
 	void RecalcChilds(Transform[] childs)
 	{
 		var center = this.GetComponent<Renderer>().bounds.center;
-		var availableWidth = this.GetComponent<Renderer>().bounds.size.z;
+		var availableWidth = this.GetComponent<Renderer>().bounds.size.x;
 		var totalObjWidth = 0.0f;
 		try
 		{

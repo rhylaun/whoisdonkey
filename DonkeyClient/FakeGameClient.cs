@@ -165,12 +165,21 @@ namespace Donkey.Client
 
 		public List<string> GetPlayers()
 		{
-			return new List<string>() { "p1", "p2", "p3" };
+			return new List<string>() { "Player1", "Player2", "Player3" };
 		}
 
 		public StatisticRecord[] GetStatistics()
 		{
-			return new StatisticRecord[] { new StatisticRecord("p1"), new StatisticRecord("p2"), new StatisticRecord("p3") };
+			var scores = new StatisticRecord[3];
+			var rand = new Random(5);
+			for (int i = 0; i < 3; i++)
+			{
+				scores[i] = new StatisticRecord("Player" + i);
+				scores[i].FinishWithDonkey = Convert.ToUInt32(rand.Next(100));
+				scores[i].GamesPlayed = Convert.ToUInt32(rand.Next(100));
+				scores[i].TotalScore = Convert.ToUInt32(rand.Next(100));
+			}
+			return scores;
 		}
 	}
 }

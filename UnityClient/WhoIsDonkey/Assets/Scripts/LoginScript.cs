@@ -31,13 +31,11 @@ public class LoginScript : MonoBehaviour
 		var login = LoginInput.text.Trim();
 		if (string.IsNullOrEmpty(login))
             return;
-		
+
+#if (!UNITY_EDITOR)
 		var auth = new AuthData(login, "");
 		var client = GameClientManager.CreateNew(auth);
 		Debug.Log(string.Format("Client created"));
-
-#if (!UNITY_EDITOR)
-		
 
 		var isRegistred = client.Register();
 		Debug.Log(string.Format("Client registered: {0}", isRegistred));

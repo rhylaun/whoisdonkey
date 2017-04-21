@@ -12,12 +12,7 @@ public class PlayerUpdaterScript : MonoBehaviour {
 	public void RefreshPlayers()
 	{
 		
-#if UNITY_EDITOR
-		var players = new List<string> { "Player1", "Player2", "Player3" };
-#else
 		var players = GameClientManager.Current.GetPlayers();
-#endif
-
 		ClearContent();
 		FillContent(players);
 	}

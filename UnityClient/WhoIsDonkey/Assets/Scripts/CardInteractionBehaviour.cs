@@ -40,8 +40,8 @@ public class CardInteractionBehaviour : MonoBehaviour
     {
         if (State == CardState.InHand)
         {
-            _savedPosition = transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, Camera.current.transform.position, HoverDistance);
+			_savedPosition = transform.position;
+			MoveCloser();
         }
     }
 
@@ -49,7 +49,7 @@ public class CardInteractionBehaviour : MonoBehaviour
     {
         if (State == CardState.InHand)
         {
-            transform.position = _savedPosition;
+			ResetPosition();           
         }
     }
 
@@ -57,17 +57,27 @@ public class CardInteractionBehaviour : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && State == CardState.InHand)
         {
-            transform.position += Vector3.up * 0.5f;
+			MoveCloser();
             State = CardState.Selected;
             return;
         }
 
-        if (Input.GetMouseButtonDown(1) && State == CardState.Selected)
+        if (Input.GetMouseButtonDown(0) && State == CardState.Selected)
         {
-            transform.position -= Vector3.up * 0.5f;
+			ResetPosition();
             State = CardState.InHand;
         }
     }
+
+	private void MoveCloser()
+	{
+		transform.position = Vector3.MoveTowards(_savedPosition, Camera.main.transform.position, HoverDistance);
+	}
+
+	private void ResetPosition()
+	{
+		transform.position = _savedPosition;
+	}
 
     private GameObject GetHand()
     {

@@ -9,7 +9,6 @@ public static class CardHelper
     {
 		var cardName = string.Format("Cards/card{0}prefab", (int)card);
         var result = GameObject.Instantiate(Resources.Load<GameObject>(cardName));
-		result.transform.localScale *= 0.2f;
 		var rigidBody = result.GetComponent<Rigidbody>();
 		rigidBody.useGravity = false;
 		rigidBody.isKinematic = true;
@@ -20,12 +19,12 @@ public static class CardHelper
     {
         var dropPoint = GameObject.FindGameObjectWithTag("DropPoint");
 
-        card.transform.Translate(dropPoint.transform.position -
-                    card.transform.position + UnityEngine.Random.insideUnitSphere * 0.5f, Space.World);
-		card.transform.localScale *= 1.0f;
+		card.transform.localScale *= 0.5f;
+		card.transform.Translate(dropPoint.transform.position -
+                    card.transform.position + UnityEngine.Random.insideUnitSphere * 1.5f, Space.World);
 
 		var rigidBody = card.GetComponent<Rigidbody>();
-        rigidBody.useGravity = true;
+        rigidBody.useGravity = false;
         rigidBody.isKinematic = false;
         card.tag = "DroppedCard";
     }

@@ -1,0 +1,151 @@
+fileFormatVersion: 2
+guid: 3bf90fe62a73e1c4a98c11505a2e7e6a
+timeCreated: 1460474817
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Asteroid
+    100004: Ballon
+    100006: Ballon.001
+    100008: Ballon.002
+    100010: BallonHolder
+    100012: BallonHolder.001
+    100014: BallonHolder.002
+    100016: BallonPipe
+    100018: BallonPipe.001
+    100020: BallonPipe.002
+    100022: Camera
+    100024: Ladder
+    100026: Lamp
+    100028: Pipe.002
+    100030: Point
+    100032: SpaceCafe
+    100034: Windows
+    400000: //RootNode
+    400002: Asteroid
+    400004: Ballon
+    400006: Ballon.001
+    400008: Ballon.002
+    400010: BallonHolder
+    400012: BallonHolder.001
+    400014: BallonHolder.002
+    400016: BallonPipe
+    400018: BallonPipe.001
+    400020: BallonPipe.002
+    400022: Camera
+    400024: Ladder
+    400026: Lamp
+    400028: Pipe.002
+    400030: Point
+    400032: SpaceCafe
+    400034: Windows
+    2300000: Asteroid
+    2300002: Ballon
+    2300004: Ballon.001
+    2300006: Ballon.002
+    2300008: BallonHolder
+    2300010: BallonHolder.001
+    2300012: BallonHolder.002
+    2300014: BallonPipe
+    2300016: BallonPipe.001
+    2300018: BallonPipe.002
+    2300020: Ladder
+    2300022: Pipe.002
+    2300024: SpaceCafe
+    2300026: Windows
+    3300000: Asteroid
+    3300002: Ballon
+    3300004: Ballon.001
+    3300006: Ballon.002
+    3300008: BallonHolder
+    3300010: BallonHolder.001
+    3300012: BallonHolder.002
+    3300014: BallonPipe
+    3300016: BallonPipe.001
+    3300018: BallonPipe.002
+    3300020: Ladder
+    3300022: Pipe.002
+    3300024: SpaceCafe
+    3300026: Windows
+    4300000: Windows
+    4300002: Ladder
+    4300004: BallonPipe.002
+    4300006: BallonHolder.002
+    4300008: Ballon.002
+    4300010: Ballon.001
+    4300012: BallonHolder.001
+    4300014: BallonPipe.001
+    4300016: BallonPipe
+    4300018: BallonHolder
+    4300020: Ballon
+    4300022: SpaceCafe
+    4300024: Pipe.002
+    4300026: Asteroid
+    7400000: Camera|CameraAction
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

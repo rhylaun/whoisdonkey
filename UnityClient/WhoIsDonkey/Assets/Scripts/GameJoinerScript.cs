@@ -54,4 +54,10 @@ public class GameJoinerScript : MonoBehaviour
 		var updater = PlayerUpdater.GetComponent<PlayerUpdaterScript>();
 		updater.RefreshPlayers();
 	}
+
+	public void ReadyForGame()
+	{
+		var readyResult = GameClientManager.Current.StartGame();
+		Debug.Log(string.Format("Ready result : {0}", readyResult));
+	}
 }

@@ -52,7 +52,7 @@ namespace Donkey.Common
 				fromIndex = 0;
 
 			var tmpList = new List<GameMove>();
-			for (int i = 0; i < _moveList.Count; i++ )
+			for (int i = 0; i < _moveList.Count; i++)
 			{
 				if (_moveList[i].Index < fromIndex) continue;
 				tmpList.Add(_moveList[i].GetCopy());

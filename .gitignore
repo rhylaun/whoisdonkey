@@ -267,4 +267,4 @@ ExportedObj/
 Icon?
 ehthumbs.db
 Thumbs.db
-!build
+\!build/

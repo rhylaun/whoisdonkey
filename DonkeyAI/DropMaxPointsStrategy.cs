@@ -25,7 +25,7 @@ namespace DonkeyAI
 				if (acceptableList.Count == 0)
 					return new GameMove() { MoveType = MoveType.Pass };
 
-				
+
 				resultMove.Cards = acceptableList;
 				return resultMove;
 			}
@@ -49,7 +49,7 @@ namespace DonkeyAI
 			resultMove.Cards.Add(minCard);
 			return resultMove;
 		}
-		
+
 		private List<Card> FindAcceptableDrop(List<Card> cardsInHand, List<Card> cardsOnTable)
 		{
 			var sorted = GetSortedCards(cardsInHand);

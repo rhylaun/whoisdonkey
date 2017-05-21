@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 public class ButtonScripts : MonoBehaviour
 {
-   
-	
     public void Leave()
     {
         var result = GameClientManager.Current.Leave();

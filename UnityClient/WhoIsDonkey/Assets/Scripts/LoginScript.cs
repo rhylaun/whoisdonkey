@@ -32,7 +32,6 @@ public class LoginScript : MonoBehaviour
 		if (string.IsNullOrEmpty(login))
             return;
 
-#if (!UNITY_EDITOR)
 		var auth = new AuthData(login, "");
 		var client = GameClientManager.CreateNew(auth);
 		Debug.Log(string.Format("Client created"));
@@ -45,7 +44,6 @@ public class LoginScript : MonoBehaviour
 
 		if (!isAuth)
 			return;
-#endif
 
 		LoginPanel.SetActive(false);
 		MenuPanel.SetActive(true);

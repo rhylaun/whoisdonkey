@@ -56,7 +56,7 @@ namespace DonkeyAI
 				var move = _strategy.CalculateMove(cardsInHand, cardsOnTable, donkeyRound, !donkeyRound);
 				if (TryMove(move))
 					continue;
-				
+
 				move = _strategy.CalculateMove(cardsInHand, cardsOnTable, false, false);
 				TryMove(move);
 			}

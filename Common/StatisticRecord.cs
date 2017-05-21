@@ -1,5 +1,8 @@
-﻿namespace Donkey.Common
+﻿using System;
+
+namespace Donkey.Common
 {
+	[Serializable]
 	public class StatisticRecord
 	{
 		public readonly string Name;

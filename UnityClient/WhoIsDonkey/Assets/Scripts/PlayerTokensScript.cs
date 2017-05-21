@@ -74,17 +74,17 @@ public class PlayerTokensScript : MonoBehaviour
 	private void RotateToToken(GameObject token)
 	{
 		var angle = token.transform.rotation.eulerAngles.z;
-		
+
 		StartCoroutine(RotateCoroutine(angle));
 	}
 
 	private IEnumerator RotateCoroutine(float angle)
 	{
 		var count = 20;
-		for(int i = 0; i < count; i++)
+		for (int i = 0; i < count; i++)
 		{
-			yield return new WaitForSeconds(1/count);
-			_holder.transform.Rotate(Vector3.forward, -angle/count, Space.Self);
+			yield return new WaitForSeconds(1 / count);
+			_holder.transform.Rotate(Vector3.forward, -angle / count, Space.Self);
 		}
 	}
 

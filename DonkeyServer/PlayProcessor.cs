@@ -78,13 +78,14 @@ namespace Donkey.Server
 
 			var clearMove = GenerateMove(_winningMove.Player, MoveType.Clear, new List<Card>());
 			result.Add(clearMove);
-			
+
 			var takeMove = _roundRules.GetTakeMove(_winningMove.Player, _cardStack.PopAll());
 			takeMove.GameId = _gameId;
 			takeMove.Index = clearMove.Index + 1;
 
 			Append(clearMove);
-			if (!takeMove.Cards.Any()) return result;
+			if (!takeMove.Cards.Any())
+				return result;
 
 			result.Add(takeMove);
 			Append(takeMove);

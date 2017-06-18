@@ -21,7 +21,8 @@ namespace Donkey.Server
 		{
 			get
 			{
-				lock (_locker) return _ended;
+				lock (_locker)
+					return _ended;
 			}
 		}
 

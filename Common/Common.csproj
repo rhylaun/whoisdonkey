@@ -62,7 +62,7 @@
   <ItemGroup>
     <Compile Include="Answers\GetStatisticAnswer.cs" />
     <Compile Include="Answers\AuthAnswer.cs" />
-    <Compile Include="Answers\CurrentPlayerAnswer.cs" />
+    <Compile Include="Answers\CurrentGameStateAnswer.cs" />
     <Compile Include="Answers\GetCardSetAnswer.cs" />
     <Compile Include="Answers\GetStateAnswer.cs" />
     <Compile Include="Answers\RegisterAnswer.cs" />
@@ -83,7 +83,7 @@
     <Compile Include="ClientServer\TcpNetworkClient.cs" />
     <Compile Include="Commands\GetStatisticCommand.cs" />
     <Compile Include="Commands\GetCardSetCommand.cs" />
-    <Compile Include="Commands\GetCurrentPlayerCommand.cs" />
+    <Compile Include="Commands\GetCurrentGameStateCommand.cs" />
     <Compile Include="Commands\GetStateCommand.cs" />
     <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="ConsoleCommandInfoAttribute.cs" />
@@ -106,6 +106,7 @@
     <Compile Include="Commands\GameMoveCommand.cs" />
     <Compile Include="Commands\StartGameCommand.cs" />
     <Compile Include="GameHistory.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="PlayerStateMatrix.cs" />
     <Compile Include="RegisterClientCommandAttribute.cs" />
     <Compile Include="Defaults.cs" />

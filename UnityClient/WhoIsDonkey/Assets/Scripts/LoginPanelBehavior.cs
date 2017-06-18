@@ -9,14 +9,10 @@ public class LoginPanelBehavior : MonoBehaviour
 
 	private bool isActive = false;
 
-	void Start()
-	{
-		ActivableObject.SetActive(false);
-	}
-
 	void Update()
 	{
-		if (isActive) return;
+		if (isActive)
+			return;
 
 		if(Input.anyKeyDown)
 		{

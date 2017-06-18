@@ -4,10 +4,10 @@ using Donkey.Common.Commands;
 
 namespace Donkey.Server.CommandProcessors
 {
-	[CommandProcessorInfo(CommandType = CommandType.GetCurrentPlayer)]
-	public class CurrentPlayerCommandProcessor : BaseCommandProcessor
+	[CommandProcessorInfo(CommandType = CommandType.GetCurrentGameState)]
+	public class CurrentGameStateCommandProcessor : BaseCommandProcessor
 	{
-		public CurrentPlayerCommandProcessor(ClientCommand command)
+		public CurrentGameStateCommandProcessor(ClientCommand command)
             : base(command)
         {
 		}
@@ -16,18 +16,20 @@ namespace Donkey.Server.CommandProcessors
 		{
 			var result = true;
 			var name = string.Empty;
+			var gameEnded = false;
 			try
 			{
 				var player = server.GetPlayer(Command.AuthData);
 				var game = server.GetGameByPlayer(player);
 				name = game.CurrentTurnPlayer.AuthData.Login;
+				gameEnded = game.Ended;
 			}
 			catch (GameServerException)
 			{
 				result = false;
 			}
 
-			Answer = new CurrentPlayerAnswer(result, name);
+			Answer = new CurrentGameStateAnswer(result, name, gameEnded);
 			return result;
 		}
 	}

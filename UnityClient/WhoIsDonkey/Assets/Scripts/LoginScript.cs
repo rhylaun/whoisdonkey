@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using Donkey.Client;
 using Donkey.Common;
-using System;
 
 public class LoginScript : MonoBehaviour
 {
 	public InputField LoginInput;
-	public GameObject LoginPanel;
-	public GameObject MenuPanel;
 
 	public void Update()
 	{
@@ -19,12 +15,6 @@ public class LoginScript : MonoBehaviour
 
 	public void LoginToServer()
 	{
-		if (LoginPanel == null)
-			throw new Exception("LoginPanel isnt set!");
-
-		if (MenuPanel == null)
-			throw new Exception("MenuPanel isnt set!");
-
 		if (LoginInput == null)
             return;
 
@@ -44,9 +34,6 @@ public class LoginScript : MonoBehaviour
 
 		if (!isAuth)
 			return;
-
-		LoginPanel.SetActive(false);
-		MenuPanel.SetActive(true);
 	}
 }
 

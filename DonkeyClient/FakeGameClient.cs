@@ -75,6 +75,14 @@ namespace Donkey.Client
 			}
 		}
 
+		public GameState CurrentGameState
+		{
+			get
+			{
+				return new GameState(_currentPlayer, false);
+			}
+		}
+
 		public bool Auth()
 		{
 			_stateMachine.ApplyCommandType(CommandType.Auth);

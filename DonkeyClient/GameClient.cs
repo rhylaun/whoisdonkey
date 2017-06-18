@@ -20,7 +20,7 @@ namespace Donkey.Client
 		private readonly Thread _checkStateThread;
 
 		private PlayerCardSet _cardSet;
-		private string _currentTurnPlayerName = string.Empty;
+		private GameState _currentGameState;
 
 		public AuthData AuthData { get; private set; }
 		private PlayerState _state;
@@ -56,18 +56,18 @@ namespace Donkey.Client
 			{
 				lock (_checkLocker)
 				{
-					return AuthData.Login.Equals(_currentTurnPlayerName, StringComparison.InvariantCulture);
+					return AuthData.Login.Equals(_currentGameState.ActivePlayerName, StringComparison.InvariantCulture);
 				}
 			}
 		}
 
-		public string CurrentTurnPlayer
+		public GameState CurrentGameState
 		{
 			get
 			{
 				lock (_checkLocker)
 				{
-					return _currentTurnPlayerName;
+					return _currentGameState;
 				}
 			}
 		}
@@ -137,10 +137,10 @@ namespace Donkey.Client
 
 		private bool CheckCurrentPlayer()
 		{
-			var command = new GetCurrentPlayerCommand(AuthData);
+			var command = new GetCurrentGameStateCommand(AuthData);
 			var answer = SendCommand(command);
 			if (answer.Success)
-				_currentTurnPlayerName = ((CurrentPlayerAnswer)answer).CurrentPlayerName;
+				_currentGameState = ((CurrentGameStateAnswer)answer).GameState;
 			return answer.Success;
 		}
 

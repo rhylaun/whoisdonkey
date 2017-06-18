@@ -10,7 +10,7 @@ namespace Donkey.Client
 		PlayerState State { get; }
 		int CurrentGameStep { get; }
 		bool IsMyTurn { get; }
-		string CurrentTurnPlayer { get; }
+		GameState CurrentGameState { get; }
 
 		List<Card> GetCards();
 		GameMove[] GetHistory(int fromIndex);

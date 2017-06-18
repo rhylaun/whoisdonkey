@@ -1,9 +1,5 @@
 ﻿using Donkey.Common;
 using Donkey.Common.ClientServer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Donkey.Client
 {
@@ -20,10 +16,10 @@ namespace Donkey.Client
 			{
 				lock (_locker)
 				{
-#if DEBUG
-					if (_instance == null)
-						_instance = new FakeGameClient();
-#endif
+//#if DEBUG
+//					if (_instance == null)
+//						_instance = new FakeGameClient();
+//#endif
 
 					return _instance;
 				}

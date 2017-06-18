@@ -19,13 +19,13 @@ public class PlayerTokensScript : MonoBehaviour
 		CreatePlayerTokens();
 		SpreadTokens();
 		_holder.transform.Rotate(Vector3.right, Inclination);
-		_currentPlayer = GameClientManager.Current.CurrentTurnPlayer;
+		_currentPlayer = GameClientManager.Current.CurrentGameState.ActivePlayerName;
 		RotateToToken(_nameToToken[_currentPlayer]);
 	}
 
 	void Update()
 	{
-		var player = GameClientManager.Current.CurrentTurnPlayer;
+		var player = GameClientManager.Current.CurrentGameState.ActivePlayerName;
 		if (player == _currentPlayer)
 			return;
 

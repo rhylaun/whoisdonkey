@@ -17,16 +17,16 @@ namespace Donkey.Common
 			{
 				_array[state] = new Dictionary<CommandType, PlayerState>();
 
-				foreach (var cmd in Enum.GetValues(typeof(CommandType)).Cast<CommandType>())
-					_array[state][cmd] = PlayerState.Error;
+				//foreach (var cmd in Enum.GetValues(typeof(CommandType)).Cast<CommandType>())
+				//	_array[state][cmd] = PlayerState.Error;
 
-				_array[state][CommandType.KeepAlive] = state;  //команда keepalive сохраняет состояние клиента
-				_array[state][CommandType.GetState] = state;  //команда getstate сохраняет состояние клиента
-				_array[state][CommandType.GetLobbies] = state; //команда getlobbies сохраняет состояние клиента
-				_array[state][CommandType.GetPlayerList] = state; //команда getplayers сохраняет состояние клиента
-				_array[state][CommandType.GetGames] = state;   //команда getgames сохраняет состояние клиента
-				_array[state][CommandType.GetCurrentGameState] = state;   //команда getcurrentplayer сохраняет состояние клиента
-				_array[state][CommandType.GetStatistic] = state;   //команда getstatistic сохраняет состояние клиента
+				//_array[state][CommandType.KeepAlive] = state;  //команда keepalive сохраняет состояние клиента
+				//_array[state][CommandType.GetState] = state;  //команда getstate сохраняет состояние клиента
+				//_array[state][CommandType.GetLobbies] = state; //команда getlobbies сохраняет состояние клиента
+				//_array[state][CommandType.GetPlayerList] = state; //команда getplayers сохраняет состояние клиента
+				//_array[state][CommandType.GetGames] = state;   //команда getgames сохраняет состояние клиента
+				//_array[state][CommandType.GetCurrentGameState] = state;   //команда getcurrentplayer сохраняет состояние клиента
+				//_array[state][CommandType.GetStatistic] = state;   //команда getstatistic сохраняет состояние клиента
 			}
 
 			_array[PlayerState.Offline][CommandType.Auth] = PlayerState.Online;
@@ -50,9 +50,10 @@ namespace Donkey.Common
 
 		public static PlayerState Resolve(PlayerState state, CommandType commandType)
 		{
-			return _array[state][commandType];
+			if (_array[state].ContainsKey(commandType))
+				return _array[state][commandType];
+
+			return state; //если в матрице переходов нет явного указания на смену состояния, значит состояние сохраняется
 		}
-
-
 	}
 }

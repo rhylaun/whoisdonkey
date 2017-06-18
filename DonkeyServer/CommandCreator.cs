@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Donkey.Common.Commands;
+﻿using Donkey.Common.Commands;
 
 namespace Donkey.Server
 {
@@ -19,7 +15,7 @@ namespace Donkey.Server
                 case CommandType.GetLobbies:
                     result = new GetLobbiesCommand(ServerDefaults.Root);
                     break;
-                case CommandType.GetPlayers:
+                case CommandType.GetPlayerList:
                     result = new GetPlayersCommand(ServerDefaults.Root);
                     break;
                 case CommandType.Leave:

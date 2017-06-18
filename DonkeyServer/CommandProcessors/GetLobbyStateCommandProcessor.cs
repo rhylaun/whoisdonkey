@@ -4,31 +4,30 @@ using Donkey.Common.Answers;
 
 namespace Donkey.Server.CommandProcessors
 {
-	[CommandProcessorInfo(CommandType = CommandType.GetPlayerList)]
-    public class GetPlayersCommandProcessor : BaseCommandProcessor
+	[CommandProcessorInfo(CommandType = CommandType.GetLobbyState)]
+    public class GetLobbyStateCommandProcessor : BaseCommandProcessor
     {
-        public GetPlayersCommandProcessor(ClientCommand command)
+        public GetLobbyStateCommandProcessor(ClientCommand command)
             : base(command)
         {
         }
 
         protected override bool Process(GameServer server)
         {
+			var command = (GetLobbyStateCommand)Command;
             var result = true;
-            string[] players = null;
+			PlayerInLobbyDescription[] players = null;
             try
             {
-                players = server.GetPlayers().ToArray();
+				var lobby = server.GetLobby(command.LobbyName);
+				players = lobby.GetState();
             }
             catch (GameServerException)
             {
                 result = true;
             }
 
-            Answer = new GetPlayersAnswer(result)
-            {
-                Players = players
-            };
+			Answer = new GetLobbyStateAnswer(result, players);
             return result;
         }
     }

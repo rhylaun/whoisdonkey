@@ -159,9 +159,11 @@ namespace Donkey.Client
 
 		public bool Update()
 		{
-			if (!CheckState()) return false;
+			if (!CheckState())
+				return false;
 
-			if (State != PlayerState.Game) return false;
+			if (State != PlayerState.Game)
+				return false;
 
 			var getHistoryCommand = new GetHistoryCommand(AuthData, CurrentGameStep);
 			var historyResult = SendCommand(getHistoryCommand);
@@ -169,7 +171,8 @@ namespace Donkey.Client
 			var moveArray = ((GetHistoryAnswer)historyResult).History;
 			foreach (var move in moveArray)
 			{
-				if (move.Index <= CurrentGameStep) continue;
+				if (move.Index <= CurrentGameStep)
+					continue;
 
 				_history.Add(move);
 				ProcessMove(move);
@@ -179,7 +182,8 @@ namespace Donkey.Client
 
 		private void ProcessMove(GameMove move)
 		{
-			if (move.Player != null && !move.Player.Equals(AuthData)) return;
+			if (move.Player != null && !move.Player.Equals(AuthData))
+				return;
 
 			if (move.MoveType == MoveType.Drop)
 				_cardSet.Extract(move.Cards);

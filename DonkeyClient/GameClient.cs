@@ -15,7 +15,7 @@ namespace Donkey.Client
 
 		private readonly IPEndPoint _endPoint;
 		private CommandSender<TNetworkClient> _commandSender;
-		private readonly GameHistory _history;
+		private readonly GameHistory _history = new GameHistory();
 
 		private readonly Thread _checkStateThread;
 
@@ -74,17 +74,23 @@ namespace Donkey.Client
 
 		public GameClient(AuthData authData, string serverAddress, int port = Defaults.Port)
 		{
-			_history = new GameHistory();
 			AuthData = authData;
 			_endPoint = new IPEndPoint(IPAddress.Parse(serverAddress), port);
 			State = PlayerState.Offline;
-			_cardSet = new PlayerCardSet();
 			_commandSender = new CommandSender<TNetworkClient>(_endPoint);
+			InitGameState();
 			_checkStateThread = new Thread(CheckStateRoutine)
 			{
 				IsBackground = true
 			};
 			_checkStateThread.Start();
+
+		}
+
+		private void InitGameState()
+		{
+			_history.Clear();
+			_cardSet = new PlayerCardSet();
 		}
 
 		private void CheckStateRoutine()
@@ -127,10 +133,15 @@ namespace Donkey.Client
 
 		private bool CheckState()
 		{
+			var stateBeforeCheck = State;
 			var command = new GetStateCommand(AuthData);
 			var answer = SendCommand(command);
 			if (answer.Success)
 				State = ((GetStateAnswer)answer).State;
+
+			var shouldInitGameState = stateBeforeCheck != PlayerState.Game && State == PlayerState.Game;
+			if (shouldInitGameState)
+				InitGameState();
 
 			return answer.Success;
 		}
@@ -167,7 +178,8 @@ namespace Donkey.Client
 
 			var getHistoryCommand = new GetHistoryCommand(AuthData, CurrentGameStep);
 			var historyResult = SendCommand(getHistoryCommand);
-			if (!historyResult.Success) return false;
+			if (!historyResult.Success)
+				return false;
 			var moveArray = ((GetHistoryAnswer)historyResult).History;
 			foreach (var move in moveArray)
 			{

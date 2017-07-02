@@ -124,32 +124,17 @@ namespace Donkey.Server
 				if (gameMove.MoveType == MoveType.Drop && !_cardSet.GetPlayerCardset(gameMove.Player).Contains(gameMove.Cards))
 					return false;
 
-				if (_moveProcessor.Append(gameMove))
-				{
-					_cardSet.GetPlayerCardset(gameMove.Player).Extract(gameMove.Cards);
-					PassTurnToNextPlayer();
-					if (_currentTurnPlayer.AuthData.Equals(_moveProcessor.GetEndRoundPlayer()))
-					{
-						var winner = _moveProcessor.GetRoundWinner();
-						_currentTurnPlayer = _players.Single(x => x.AuthData.Equals(winner));
-						var endRoundResult = _moveProcessor.EndRound();
-						foreach (var move in endRoundResult)
-						{
-							_database.WriteGameMove(move);
-							if (move.MoveType == MoveType.Take) _cardSet.GetPlayerCardset(move.Player).Add(move.Cards);
-						}
+				if (!_moveProcessor.Append(gameMove))
+					return false;
 
-						foreach (var p in _players)
-							if (!_cardSet.GetPlayerCardset(p.AuthData).Any())
-							{
-								EndGame();
-								break;
-							}
-					}
-					_database.WriteGameMove(gameMove);
-					return true;
-				}
-				return false;
+				_cardSet.GetPlayerCardset(gameMove.Player).Extract(gameMove.Cards);
+				PassTurnToNextPlayer();
+				var isRoundEnded = CheckForRoundEnd();
+				if (isRoundEnded)
+					CheckForGameEnd();
+
+				_database.WriteGameMove(gameMove);
+				return true;
 			}
 		}
 
@@ -157,6 +142,16 @@ namespace Donkey.Server
 		{
 			var move = CreateMove(player, moveType, cards);
 			return MakeMove(move);
+		}
+
+		public GameMove[] GetHistory(Player player, int fromIndex)
+		{
+			var moves = _moveProcessor.GetHistory(fromIndex);
+			foreach (var move in moves)
+				if (move.MoveType == MoveType.Take && !player.AuthData.Equals(move.Player))
+					for (int i = 0; i < move.Cards.Count; i++)
+						move.Cards[i] = Card.Hidden;
+			return moves;
 		}
 
 		private void EndGame()
@@ -171,14 +166,36 @@ namespace Donkey.Server
 			_currentTurnPlayer = _players[newIndex];
 		}
 
-		public GameMove[] GetHistory(Player player, int fromIndex)
+		private bool CheckForRoundEnd()
 		{
-			var moves = _moveProcessor.GetHistory(fromIndex);
-			foreach (var move in moves)
-				if (move.MoveType == MoveType.Take && !player.AuthData.Equals(move.Player))
-					for (int i = 0; i < move.Cards.Count; i++)
-						move.Cards[i] = Card.Hidden;
-			return moves;
+			if (!_currentTurnPlayer.AuthData.Equals(_moveProcessor.GetEndRoundPlayer()))
+				return false;
+
+			var winner = _moveProcessor.GetRoundWinner();
+			if (winner == null)
+				return true;
+
+			_currentTurnPlayer = _players.Single(x => x.AuthData.Equals(winner));
+			var endRoundResult = _moveProcessor.EndRound();
+			foreach (var move in endRoundResult)
+			{
+				_database.WriteGameMove(move);
+				if (move.MoveType == MoveType.Take)
+					_cardSet.GetPlayerCardset(move.Player).Add(move.Cards);
+			}
+			return true;
+		}
+
+		private bool CheckForGameEnd()
+		{
+			foreach (var p in _players)
+				if (!_cardSet.GetPlayerCardset(p.AuthData).Any())
+				{
+					EndGame();
+					return true;
+				}
+
+			return false;
 		}
 	}
 }

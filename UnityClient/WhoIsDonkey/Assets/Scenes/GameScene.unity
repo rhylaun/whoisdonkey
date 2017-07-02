@@ -887,7 +887,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b5f6a74f99d4a4580197304bdd8c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActivateMenu: {fileID: 1399255344}
+  ActivatePanel: {fileID: 1399255344}
+  HidePanel: {fileID: 323563265}
   ActivateScene: MenuScene
 --- !u!4 &758950369
 Transform:

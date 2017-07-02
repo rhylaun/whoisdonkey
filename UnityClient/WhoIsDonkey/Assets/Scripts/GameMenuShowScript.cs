@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Donkey.Client;
+using UnityEngine;
 
 public class GameMenuShowScript : MonoBehaviour
 {
@@ -6,9 +7,11 @@ public class GameMenuShowScript : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			GameMenu.SetActive(!GameMenu.activeSelf);
-		}
+		if (!Input.GetKeyDown(KeyCode.Escape))
+			return;
+		if (GameClientManager.Current.CurrentGameState.GameEnded)
+			return;
+
+		GameMenu.SetActive(!GameMenu.activeSelf);
 	}
 }

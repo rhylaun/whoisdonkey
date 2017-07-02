@@ -6,14 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class GameSceneEndScript : MonoBehaviour
 {
-	public GameObject ActivateMenu;
+	public GameObject ActivatePanel;
+	public GameObject HidePanel;
 	public string ActivateScene;
 
 	private Coroutine _coroutine;
 
 	void Start()
 	{
-		if (ActivateMenu == null)
+		if (ActivatePanel == null)
 			throw new ArgumentNullException("Argument ActivateMenu cannot be null");
 		if (string.IsNullOrEmpty(ActivateScene))
 			throw new ArgumentNullException("Argument ActivateScene cannot be null");
@@ -31,7 +32,8 @@ public class GameSceneEndScript : MonoBehaviour
 			if (!GameClientManager.Current.CurrentGameState.GameEnded)
 				continue;
 
-			ActivateMenu.SetActive(true);
+			HidePanel.SetActive(false);
+			ActivatePanel.SetActive(true);
 			break;
 		}
 	}

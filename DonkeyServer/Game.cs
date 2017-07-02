@@ -11,7 +11,8 @@ namespace Donkey.Server
 	{
 		private readonly object _locker = new object();
 
-		private readonly List<Player> _players;
+		private readonly List<Player> _registredPlayers;
+		private readonly List<Player> _ingamePlayers;
 		private readonly GameCardSet _cardSet;
 		private readonly PlayProcessor _moveProcessor;
 		private readonly Database _database;
@@ -47,11 +48,12 @@ namespace Donkey.Server
 			Name = lobby.Name;
 			_database = database;
 			_moveProcessor = new PlayProcessor(Id);
-			_players = new List<Player>(lobby.GetPlayers());
-			_cardSet = CardShuffler.GetCardSet(_players.Count);
-			_cardSet.BindPlayers(_players.Select(x => x.AuthData).ToArray());
+			_registredPlayers = new List<Player>(lobby.GetPlayers());
+			_ingamePlayers = _registredPlayers.ToList();
+			_cardSet = CardShuffler.GetCardSet(_registredPlayers.Count);
+			_cardSet.BindPlayers(_registredPlayers.Select(x => x.AuthData).ToArray());
 
-			foreach (var player in _players)
+			foreach (var player in _registredPlayers)
 			{
 				var playerCardSet = _cardSet.GetPlayerCardset(player.AuthData);
 				var takeMove = _moveProcessor.GenerateMove(player.AuthData, MoveType.Take, playerCardSet.ToList());
@@ -59,7 +61,7 @@ namespace Donkey.Server
 				_database.WriteGameMove(takeMove);
 			}
 
-			var emptyMove = _moveProcessor.GenerateMove(_players.First().AuthData, MoveType.Clear, new List<Card>());
+			var emptyMove = _moveProcessor.GenerateMove(_registredPlayers.First().AuthData, MoveType.Clear, new List<Card>());
 			_moveProcessor.Append(emptyMove);
 			_database.WriteGameMove(emptyMove);
 		}
@@ -68,7 +70,7 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				foreach (var player in _players)
+				foreach (var player in _registredPlayers)
 				{
 					player.JoinGame();
 					if (_cardSet.GetPlayerCardset(player.AuthData).Contains(Card.Donkey))
@@ -81,20 +83,26 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				return _players.ToList();
+				return _ingamePlayers.ToList();
 			}
+		}
+
+		public void RemovePlayer(Player player)
+		{
+			lock(_locker)
+				_ingamePlayers.Remove(player);
 		}
 
 		public bool HasPlayer(Player player)
 		{
 			lock (_locker)
-				return _players.Any(x => x.AuthData.Equals(player.AuthData));
+				return _ingamePlayers.Any(x => x.AuthData.Equals(player.AuthData));
 		}
 
 		public bool HasPlayer(AuthData authData)
 		{
 			lock (_locker)
-				return _players.Any(x => x.AuthData.Equals(authData));
+				return _ingamePlayers.Any(x => x.AuthData.Equals(authData));
 		}
 
 		public PlayerCardSet GetPlayerCardSet(Player player)
@@ -161,9 +169,9 @@ namespace Donkey.Server
 
 		private void PassTurnToNextPlayer()
 		{
-			var oldIndex = _players.IndexOf(_currentTurnPlayer);
-			var newIndex = (oldIndex + 1) % _players.Count;
-			_currentTurnPlayer = _players[newIndex];
+			var oldIndex = _registredPlayers.IndexOf(_currentTurnPlayer);
+			var newIndex = (oldIndex + 1) % _registredPlayers.Count;
+			_currentTurnPlayer = _registredPlayers[newIndex];
 		}
 
 		private bool CheckForRoundEnd()
@@ -175,7 +183,7 @@ namespace Donkey.Server
 			if (winner == null)
 				return true;
 
-			_currentTurnPlayer = _players.Single(x => x.AuthData.Equals(winner));
+			_currentTurnPlayer = _registredPlayers.Single(x => x.AuthData.Equals(winner));
 			var endRoundResult = _moveProcessor.EndRound();
 			foreach (var move in endRoundResult)
 			{
@@ -188,7 +196,7 @@ namespace Donkey.Server
 
 		private bool CheckForGameEnd()
 		{
-			foreach (var p in _players)
+			foreach (var p in _registredPlayers)
 				if (!_cardSet.GetPlayerCardset(p.AuthData).Any())
 				{
 					EndGame();

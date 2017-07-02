@@ -33,6 +33,7 @@ namespace Donkey.Server.CommandProcessors
 						break;
 					case PlayerState.Game:
 						var game = server.GetGameByPlayer(player);
+						game.RemovePlayer(player);
 						var players = game.GetPlayers();
 						if (players.Count == 0)
 							server.RemoveGame(game);

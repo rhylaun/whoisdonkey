@@ -10,6 +10,7 @@ TagManager:
   - SelectedCard
   - InHandCard
   - GameJoiner
+  - DropArea
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - DropArea
   - 
   - 
   - 

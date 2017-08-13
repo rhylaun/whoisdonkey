@@ -36,42 +36,58 @@ public class CardInteractionBehaviour : MonoBehaviour
 	}
 
 	private Vector3 _savedPosition;
-	void OnMouseEnter()
+	private float _distance;
+	private Vector3 _offset;
+	private GameObject _dropArea;
+
+	void Start()
 	{
-		if (State == CardState.InHand)
-		{
-			_savedPosition = transform.position;
-			MoveCloser();
-		}
+		_distance = (Camera.main.transform.position - GetHand().transform.position).magnitude;
+		_dropArea = GetDropArea();
 	}
 
-	void OnMouseExit()
+	void OnMouseDown()
 	{
+		if (!Input.GetMouseButtonDown(0))
+			return;
+
+		var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _distance);
+		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+		_offset = this.transform.position - mousePosition;
 		if (State == CardState.InHand)
+			_savedPosition = this.transform.position;
+	}
+
+	void OnMouseUp()
+	{
+		if (!Input.GetMouseButtonUp(0))
+			return;
+
+		RaycastHit hit;
+		int layerMask = 1 << 8;
+		var ray = new Ray(this.transform.position, Vector3.forward);
+		if (Physics.Raycast(ray, out hit, 10f, layerMask))
 		{
+			State = CardState.Selected;
+		}
+		else
+		{
+			State = CardState.InHand;
 			ResetPosition();
 		}
 	}
 
-	void OnMouseOver()
+	void OnMouseDrag()
 	{
-		if (Input.GetMouseButtonDown(0) && State == CardState.InHand)
+		if (_offset == null)
 		{
-			MoveCloser();
-			State = CardState.Selected;
+			Debug.Log("_offset == null");
 			return;
 		}
 
-		if (Input.GetMouseButtonDown(0) && State == CardState.Selected)
-		{
-			ResetPosition();
-			State = CardState.InHand;
-		}
-	}
-
-	private void MoveCloser()
-	{
-		transform.position = Vector3.MoveTowards(_savedPosition, Camera.main.transform.position, HoverDistance);
+		var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _distance);
+		var objPosition = Camera.main.ScreenToWorldPoint(mousePosition) + _offset;
+		this.transform.position = objPosition;
 	}
 
 	private void ResetPosition()
@@ -82,6 +98,11 @@ public class CardInteractionBehaviour : MonoBehaviour
 	private GameObject GetHand()
 	{
 		return GameObject.FindGameObjectWithTag("Hand");
+	}
+
+	private GameObject GetDropArea()
+	{
+		return GameObject.FindGameObjectWithTag("DropArea");
 	}
 }
 

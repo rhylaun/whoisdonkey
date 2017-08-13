@@ -206,7 +206,7 @@ TextMesh:
   m_TabSize: 4
   m_FontSize: 48
   m_FontStyle: 0
-  m_RichText: 1
+  m_RichText: 0
   m_Font: {fileID: 12800000, guid: 0ec2060898b7e4c46abda1e9dd7170df, type: 3}
   m_Color:
     serializedVersion: 2

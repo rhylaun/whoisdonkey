@@ -16,10 +16,10 @@ namespace Donkey.Client
 			{
 				lock (_locker)
 				{
-//#if DEBUG
-//					if (_instance == null)
-//						_instance = new FakeGameClient();
-//#endif
+#if DEBUG
+					if (_instance == null)
+						_instance = new FakeGameClient();
+#endif
 
 					return _instance;
 				}

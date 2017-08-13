@@ -55,7 +55,7 @@ namespace Donkey.Client
 		{
 			get
 			{
-				return _stateMachine.CurrentState;
+				return PlayerState.Game;
 			}
 		}
 

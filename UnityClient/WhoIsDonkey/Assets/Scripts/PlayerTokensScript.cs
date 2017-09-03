@@ -7,7 +7,6 @@ public class PlayerTokensScript : MonoBehaviour
 {
 	public GameObject PlayerTokenPrefab;
 	public float Radius = 1.0f;
-	public float Inclination = 30;
 
 	private List<GameObject> _tokens = new List<GameObject>();
 	private Dictionary<string, GameObject> _nameToToken = new Dictionary<string, GameObject>();
@@ -17,10 +16,8 @@ public class PlayerTokensScript : MonoBehaviour
 	void Start()
 	{
 		CreatePlayerTokens();
-		SpreadTokens();
-		_holder.transform.Rotate(Vector3.right, Inclination);
 		_currentPlayer = GameClientManager.Current.CurrentGameState.ActivePlayerName;
-		RotateToToken(_nameToToken[_currentPlayer]);
+		SetCurrentPlayerVisible(_nameToToken[_currentPlayer]);
 	}
 
 	void Update()
@@ -30,15 +27,9 @@ public class PlayerTokensScript : MonoBehaviour
 			return;
 
 		var token = _nameToToken[player];
-		RotateToToken(token);
+		SetCurrentPlayerVisible(token);
 		_currentPlayer = player;
 		Debug.Log("Rotated to " + _currentPlayer);
-	}
-
-	void OnDrawGizmos()
-	{
-		Gizmos.color = Color.green;
-		Gizmos.DrawWireSphere(transform.position, Radius);
 	}
 
 	private void CreatePlayerTokens()
@@ -48,44 +39,23 @@ public class PlayerTokensScript : MonoBehaviour
 		_holder.transform.SetParent(this.transform);
 		_holder.transform.position = this.transform.position;
 
+
 		foreach (var player in players)
 		{
 			var token = GameObject.Instantiate(PlayerTokenPrefab);
 			token.transform.Find("Username").GetComponent<TextMesh>().text = player;
 			token.transform.SetParent(_holder.transform);
+			token.transform.position = _holder.transform.position;
 			_tokens.Add(token);
 			_nameToToken.Add(player, token);
-		}
-
-	}
-
-	private void SpreadTokens()
-	{
-		var center = this.transform.position;
-		var anglePart = 360 / _tokens.Count;
-		for (int i = 0; i < _tokens.Count; i++)
-		{
-			var transform = _tokens[i].transform;
-			transform.position = center + Vector3.down * Radius;
-			transform.RotateAround(center, Vector3.forward, anglePart * i);
+			token.SetActive(false);
 		}
 	}
 
-	private void RotateToToken(GameObject token)
+	private void SetCurrentPlayerVisible(GameObject token)
 	{
-		var angle = token.transform.rotation.eulerAngles.z;
-
-		StartCoroutine(RotateCoroutine(angle));
+		foreach (var t in _tokens)
+			t.SetActive(false);
+		token.SetActive(true);
 	}
-
-	private IEnumerator RotateCoroutine(float angle)
-	{
-		var count = 20;
-		for (int i = 0; i < count; i++)
-		{
-			yield return new WaitForSeconds(1 / count);
-			_holder.transform.Rotate(Vector3.forward, -angle / count, Space.Self);
-		}
-	}
-
 }

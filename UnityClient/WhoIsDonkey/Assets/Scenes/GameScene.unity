@@ -1211,7 +1211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerTokenPrefab: {fileID: 1735193633602600, guid: 31a87a1298fdf6e4181d725bc13d6979,
     type: 2}
-  Radius: 20
+  Radius: 40
 --- !u!1 &1142013858 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1405390831841588, guid: caddc9d8b6f7c0e4d9f095887da060c8,
@@ -1702,6 +1702,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cc1295c3f766b4aab65e9070e03497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveTime: 0.2
+  PassTime: 3
 --- !u!114 &1655965842
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,7 +29,12 @@ namespace Donkey.Server
 		public void AddPlayer(Player player)
 		{
 			lock (_locker)
+			{
+				if (_players.Contains(player))
+					return;
+
 				_players.Add(player);
+			}
 		}
 
 		public void RemovePlayer(Player player)

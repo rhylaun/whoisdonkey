@@ -1,5 +1,6 @@
 ﻿using Donkey.Common;
 using Donkey.Common.ClientServer;
+using System.IO;
 
 namespace Donkey.Client
 {
@@ -16,11 +17,6 @@ namespace Donkey.Client
 			{
 				lock (_locker)
 				{
-#if DEBUG
-					if (_instance == null)
-						_instance = new FakeGameClient();
-#endif
-
 					return _instance;
 				}
 
@@ -35,6 +31,11 @@ namespace Donkey.Client
 				{
 					while (_instance.State != PlayerState.Offline && _instance.Leave()) { }
 					_instance.Dispose();	
+				}
+
+				if (File.Exists("server.cfg"))
+				{
+					_serverAddress = File.ReadAllLines("server.cfg")[0].Trim();
 				}
 
 				_instance = new GameClient<TcpNetworkClient>(auth, _serverAddress);

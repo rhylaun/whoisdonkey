@@ -1,6 +1,7 @@
 ﻿using Donkey.Client;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +13,9 @@ public class PlayerUpdaterScript : MonoBehaviour {
 	public void RefreshPlayers()
 	{
 		
-		var players = GameClientManager.Current.GetPlayers();
+		var players = GameClientManager.Current.GetLobbyState();
 		ClearContent();
-		FillContent(players);
+		FillContent(players.Select(x => x.Name).ToList());
 	}
 
 	private void ClearContent()

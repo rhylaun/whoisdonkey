@@ -10,6 +10,7 @@ namespace Donkey.Common.Answers
 		public GetLobbyStateAnswer(bool success, PlayerInLobbyDescription[] players)
 			: base(success)
 		{
+			Players = players;
 		}
 	}
 }

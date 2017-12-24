@@ -22,6 +22,8 @@ namespace Donkey.Client
 		private PlayerCardSet _cardSet;
 		private GameState _currentGameState;
 
+		public string LobbyName { get; private set; }
+
 		public AuthData AuthData { get; private set; }
 		private PlayerState _state;
 		public PlayerState State
@@ -226,13 +228,19 @@ namespace Donkey.Client
 		public bool JoinLobby(string lobbyName)
 		{
 			var command = new JoinLobbyCommand(AuthData, lobbyName);
-			return ExecuteAndCheckState(command);
+			var result = ExecuteAndCheckState(command);
+			if (result)
+				LobbyName = lobbyName;
+			return result;
 		}
 
 		public bool CreateLobby(string lobbyName)
 		{
 			var command = new CreateLobbyCommand(AuthData, lobbyName);
-			return ExecuteAndCheckState(command);
+			var result = ExecuteAndCheckState(command);
+			if (result)
+				LobbyName = lobbyName;
+			return result;
 		}
 
 		public List<string> GetLobbies()
@@ -290,6 +298,18 @@ namespace Donkey.Client
 			if (result.Success)
 				return ((GetStatisticAnswer)result).Statistic;
 			return new StatisticRecord[0];
+		}
+
+		public List<PlayerInLobbyDescription> GetLobbyState()
+		{
+			if (string.IsNullOrEmpty(LobbyName))
+				return new List<PlayerInLobbyDescription>();
+
+			var command = new GetLobbyStateCommand(AuthData, LobbyName);
+			var result = SendCommand(command);
+			if (result.Success)
+				return new List<PlayerInLobbyDescription>(((GetLobbyStateAnswer)result).Players);
+			return new List<PlayerInLobbyDescription>();
 		}
 	}
 }

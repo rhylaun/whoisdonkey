@@ -17,6 +17,7 @@ namespace Donkey.Client
         GameMove[] GetHistory();
         List<string> GetLobbies();
 		List<string> GetPlayers();
+		List<PlayerInLobbyDescription> GetLobbyState();
 
 		bool Register();
 		bool Auth();

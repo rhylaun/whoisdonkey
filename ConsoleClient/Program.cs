@@ -27,7 +27,8 @@ namespace ConsoleClient
 			var password = Console.ReadLine();
 
 			Console.WriteLine("Connecting to {0} as [{1}]", address, login);
-			using (var client = new GameClient<TcpNetworkClient>(new AuthData(login, password), address))
+			//using (var client = new GameClient<TcpNetworkClient>(new AuthData(login, password), address))
+			using (var client = GameClientManager.CreateNew(new AuthData(login, password)))
 			{
 				bool abort = false;
 				bool result = false;
@@ -144,7 +145,14 @@ namespace ConsoleClient
 						if (command.StartsWith("join"))
 							result = client.JoinLobby(GetArgument(command, 1));
 
-						if (string.IsNullOrEmpty(message)) message = result.ToString();
+						if (command.StartsWith("state"))
+						{
+							result = true;
+							message = client.GetLobbyState().Select(x => x.Name).Aggregate((x, y) => $"{x}, {y}");
+						}
+
+						if (string.IsNullOrEmpty(message))
+							message = result.ToString();
 						WriteToConsole(result, message);
 					}
 					catch (Exception ex)

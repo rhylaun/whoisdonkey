@@ -221,5 +221,12 @@ namespace Donkey.Client
 				counter = counter % players.Count;
 			}
 		}
+
+		public List<PlayerInLobbyDescription> GetLobbyState()
+		{
+			var p1 = new PlayerInLobbyDescription("test_name", true);
+			var p2 = new PlayerInLobbyDescription("not_ready_yet", false);
+			return new List<PlayerInLobbyDescription> { p1, p2 };
+		}
 	}
 }

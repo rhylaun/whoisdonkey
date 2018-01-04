@@ -5,12 +5,12 @@ namespace Donkey.Common.Answers
 	[Serializable]
 	public class GetLobbyStateAnswer : ServerAnswer
 	{
-		public readonly PlayerInLobbyDescription[] Players;
+		public readonly LobbyState State;
 
-		public GetLobbyStateAnswer(bool success, PlayerInLobbyDescription[] players)
+		public GetLobbyStateAnswer(bool success, LobbyState lobbyState)
 			: base(success)
 		{
-			Players = players;
+			State = lobbyState;
 		}
 	}
 }

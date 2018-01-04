@@ -222,11 +222,14 @@ namespace Donkey.Client
 			}
 		}
 
-		public List<PlayerInLobbyDescription> GetLobbyState()
+		public LobbyState GetLobbyState()
 		{
-			var p1 = new PlayerInLobbyDescription("test_name", true);
-			var p2 = new PlayerInLobbyDescription("not_ready_yet", false);
-			return new List<PlayerInLobbyDescription> { p1, p2 };
+			var p1 = new PlayerInLobbyDescription("test_name", PlayerType.Human);
+			var p2 = new PlayerInLobbyDescription("not_ready_yet", PlayerType.AI);
+			var list = new List<PlayerInLobbyDescription> { p1, p2 };
+
+			var result = new LobbyState(AuthData.Login, list);
+			return result;
 		}
 	}
 }

@@ -13,9 +13,9 @@ public class PlayerUpdaterScript : MonoBehaviour {
 	public void RefreshPlayers()
 	{
 		
-		var players = GameClientManager.Current.GetLobbyState();
+		var state = GameClientManager.Current.GetLobbyState();
 		ClearContent();
-		FillContent(players.Select(x => x.Name).ToList());
+		FillContent(state.Players.Select(x => x.Name).ToList());
 	}
 
 	private void ClearContent()

@@ -10,16 +10,7 @@ namespace Donkey.Server
 		private readonly List<Player> _players = new List<Player>();
 
 		public string Name { get; private set; }
-		public bool Ready
-		{
-			get
-			{
-				lock (_locker)
-				{
-					return _players.All(x => x.State == PlayerState.Ready);
-				}
-			}
-		}
+		public Player Creator { get; private set; }
 
 		public Lobby(string name)
 		{
@@ -32,6 +23,9 @@ namespace Donkey.Server
 			{
 				if (_players.Contains(player))
 					return;
+
+				if (_players.Count == 0)
+					Creator = player;
 
 				_players.Add(player);
 			}
@@ -53,7 +47,7 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				var result = _players.Select(x => new PlayerInLobbyDescription(x.AuthData.Login, x.State == PlayerState.Ready)).ToArray();
+				var result = _players.Select(x => new PlayerInLobbyDescription(x.AuthData.Login, PlayerType.Human)).ToArray();
 				return result;
 			}
 		}

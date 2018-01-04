@@ -148,7 +148,7 @@ namespace ConsoleClient
 						if (command.StartsWith("state"))
 						{
 							result = true;
-							message = client.GetLobbyState().Select(x => x.Name).Aggregate((x, y) => $"{x}, {y}");
+							message = client.GetLobbyState().Players.Select(x => x.Name).Aggregate((x, y) => $"{x}, {y}");
 						}
 
 						if (string.IsNullOrEmpty(message))

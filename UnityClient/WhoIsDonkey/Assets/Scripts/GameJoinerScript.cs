@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ public class GameJoinerScript : MonoBehaviour
 	public GameObject GamePanel;
 	public GameObject MenuPanel;
 	public GameObject PlayerUpdater;
+
+	private GameObject _startButton = null;
 
 	public void JoinLobby(string lobbyName)
 	{
@@ -30,6 +33,10 @@ public class GameJoinerScript : MonoBehaviour
 
 		LobbyPanel.SetActive(false);
 		GamePanel.SetActive(true);
+		var startButton = GetStartButton();
+		var lobbyState = GameClientManager.Current.GetLobbyState();
+		startButton.SetActive(lobbyState.Creator == GameClientManager.Current.AuthData.Login);
+
 		var updater = PlayerUpdater.GetComponent<PlayerUpdaterScript>();
 		updater.RefreshPlayers();
 	}
@@ -51,6 +58,8 @@ public class GameJoinerScript : MonoBehaviour
 
 		MenuPanel.SetActive(false);
 		GamePanel.SetActive(true);
+		GetStartButton().SetActive(true);
+
 		var updater = PlayerUpdater.GetComponent<PlayerUpdaterScript>();
 		updater.RefreshPlayers();
 	}
@@ -59,5 +68,17 @@ public class GameJoinerScript : MonoBehaviour
 	{
 		var readyResult = GameClientManager.Current.StartGame();
 		Debug.Log(string.Format("Ready result : {0}", readyResult));
+	}
+
+	private GameObject GetStartButton()
+	{
+		if (_startButton == null)
+		{
+			var childs = GamePanel.GetComponentsInChildren<Transform>(true);
+			_startButton = childs.First(x => x.name == "StartButton").gameObject;
+		}
+
+		return _startButton;
+
 	}
 }

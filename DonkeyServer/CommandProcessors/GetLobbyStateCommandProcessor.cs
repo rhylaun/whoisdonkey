@@ -1,6 +1,7 @@
 ﻿using Donkey.Common.Commands;
 using Donkey.Common;
 using Donkey.Common.Answers;
+using System.Linq;
 
 namespace Donkey.Server.CommandProcessors
 {
@@ -16,18 +17,20 @@ namespace Donkey.Server.CommandProcessors
         {
 			var command = (GetLobbyStateCommand)Command;
             var result = true;
-			PlayerInLobbyDescription[] players = null;
+			LobbyState lobbyState = null;
             try
             {
 				var lobby = server.GetLobby(command.LobbyName);
-				players = lobby.GetState();
+				var players = lobby.GetState().ToList();
+				var creator = lobby.Creator.AuthData.Login;
+				lobbyState = new LobbyState(creator, players);
             }
             catch (GameServerException)
             {
                 result = true;
             }
 
-			Answer = new GetLobbyStateAnswer(result, players);
+			Answer = new GetLobbyStateAnswer(result, lobbyState);
             return result;
         }
     }

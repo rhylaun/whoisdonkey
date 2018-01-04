@@ -6,12 +6,12 @@ namespace Donkey.Common
 	public class PlayerInLobbyDescription
 	{
 		public readonly string Name;
-		public readonly bool Ready;
+		public readonly PlayerType PlayerType;
 
-		public PlayerInLobbyDescription(string name, bool ready)
+		public PlayerInLobbyDescription(string name, PlayerType playerType)
 		{
 			Name = name;
-			Ready = ready;
+			PlayerType = playerType;
 		}
 	}
 }

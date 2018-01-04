@@ -31,7 +31,7 @@ namespace Donkey.Client
 			get
 			{
 				lock (_checkLocker)
-					  return _state;
+					return _state;
 			}
 			private set
 			{
@@ -300,16 +300,16 @@ namespace Donkey.Client
 			return new StatisticRecord[0];
 		}
 
-		public List<PlayerInLobbyDescription> GetLobbyState()
+		public LobbyState GetLobbyState()
 		{
 			if (string.IsNullOrEmpty(LobbyName))
-				return new List<PlayerInLobbyDescription>();
+				return new LobbyState("", null);
 
 			var command = new GetLobbyStateCommand(AuthData, LobbyName);
 			var result = SendCommand(command);
 			if (result.Success)
-				return new List<PlayerInLobbyDescription>(((GetLobbyStateAnswer)result).Players);
-			return new List<PlayerInLobbyDescription>();
+				return (((GetLobbyStateAnswer)result).State);
+			return new LobbyState("", null);
 		}
 	}
 }

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Donkey.Common.Commands;
 using Donkey.Common;
 
 namespace Donkey.Server
 {
-    public static class CommandParser
+	public static class CommandParser
     {
         private static readonly Dictionary<CommandType, Type> _commandTypeToType = new Dictionary<CommandType, Type>();
         private static readonly Dictionary<Type, CommandType> _typeToCommandType = new Dictionary<Type, CommandType>();

@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Net;
-using Donkey.Common.ClientServer;
-using Donkey.Common.Commands;
+﻿using Donkey.Common.Commands;
 using Donkey.Common;
-using Donkey.Common.Answers;
 
 namespace Donkey.Server
 {
-    public class Player
+	public class Player
     {
         public AuthData AuthData { get; private set; }
         private readonly PlayerStateMachine _stateMachine = new PlayerStateMachine();

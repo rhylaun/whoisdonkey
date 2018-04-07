@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Donkey.Common.Commands;
+﻿using Donkey.Common.Commands;
 using Donkey.Common;
 using Donkey.Common.Answers;
 
 namespace Donkey.Server.CommandProcessors
 {
-    [CommandProcessorInfo(CommandType = CommandType.GetHistory)]
+	[CommandProcessorInfo(CommandType = CommandType.GetHistory)]
     public class GetHistoryCommandProcessor : BaseCommandProcessor
     {
 		public GetHistoryCommandProcessor(ClientCommand command)

@@ -1,10 +1,8 @@
 ﻿using System.Net;
-using Donkey.Common.Commands;
-using Donkey.Common.Answers;
 
 namespace Donkey.Common.ClientServer
 {
-    public interface INetworkClient
+	public interface INetworkClient
     {
         bool Connect(IPEndPoint endPoint);
         void Close();

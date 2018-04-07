@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Donkey.Common;
 
 namespace Donkey.Server
 {
-    public static class CardShuffler
+	public static class CardShuffler
     {
         private static readonly Dictionary<Card, int> CardSet = new Dictionary<Card, int>()
         {

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Donkey.Common.Commands;
+﻿using Donkey.Common.Commands;
 using Donkey.Common.Answers;
 using Donkey.Common;
 
 namespace Donkey.Server.CommandProcessors
 {
-    public abstract class BaseCommandProcessor
+	public abstract class BaseCommandProcessor
     {
         protected readonly ClientCommand Command;
 

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Donkey.Client;
-using System.Threading;
 using Donkey.Common;
-using Donkey.Common.ClientServer;
 using DonkeyAI;
 
 namespace ConsoleClient

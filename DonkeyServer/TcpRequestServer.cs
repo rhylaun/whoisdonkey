@@ -3,11 +3,10 @@ using System.Net.Sockets;
 using System.Threading;
 using Donkey.Common.ClientServer;
 using Donkey.Common.Commands;
-using Donkey.Common.Answers;
 
 namespace Donkey.Server
 {
-    public class TcpRequestServer : IRequestServer
+	public class TcpRequestServer : IRequestServer
     {
         private GameSerializer _serializer = new GameSerializer();
 		private Thread _receiveThread;

@@ -3,11 +3,10 @@ using System.Net.Sockets;
 using System.Threading;
 using Donkey.Common.ClientServer;
 using Donkey.Common.Commands;
-using Donkey.Common.Answers;
 
 namespace Donkey.Server
 {
-    public class UdpRequestServer : IRequestServer
+	public class UdpRequestServer : IRequestServer
     {
         private UdpClient _client;
         private Thread _receiveThread;

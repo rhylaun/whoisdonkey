@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Threading;
-using Donkey.Common.Commands;
-using Donkey.Common.Answers;
+﻿using System.Net.Sockets;
 using System.Net;
 
 namespace Donkey.Common.ClientServer
 {
-    public class UdpNetworkClient : INetworkClient
+	public class UdpNetworkClient : INetworkClient
     {
         private readonly UdpClient _client;
         private IPEndPoint _remoteHost;

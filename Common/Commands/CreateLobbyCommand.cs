@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Donkey.Common.Commands
 {
-    [Serializable]
+	[Serializable]
     [RegisterClientCommand(CommandType = CommandType.CreateLobby, NeedAuth = true)]
     [ConsoleCommandInfo(ConsoleLine = "createlobby")]
     public class CreateLobbyCommand : ClientCommand

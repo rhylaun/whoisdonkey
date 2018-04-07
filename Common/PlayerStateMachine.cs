@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Donkey.Common.Commands;
+﻿using Donkey.Common.Commands;
 
 namespace Donkey.Common
 {
-    public class PlayerStateMachine
+	public class PlayerStateMachine
     {
         private readonly object _locker = new object();
 

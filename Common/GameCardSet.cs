@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Donkey.Common
 {
-    public class GameCardSet
+	public class GameCardSet
     {
         private readonly PlayerCardSet[] _cardsetArray;
         public readonly DateTime Date = DateTime.UtcNow;

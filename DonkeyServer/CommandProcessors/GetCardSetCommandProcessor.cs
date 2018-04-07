@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Donkey.Common.Commands;
+﻿using Donkey.Common.Commands;
 using Donkey.Common;
 using Donkey.Common.Answers;
 
 namespace Donkey.Server.CommandProcessors
 {
-    [CommandProcessorInfo(CommandType = CommandType.GetCardSet)]
+	[CommandProcessorInfo(CommandType = CommandType.GetCardSet)]
     public class GetCardSetCommandProcessor : BaseCommandProcessor
     {
         public GetCardSetCommandProcessor(ClientCommand command)

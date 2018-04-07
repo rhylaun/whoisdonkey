@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System.Runtime.Serialization.Formatters.Binary;
 using Donkey.Common.Commands;
 using Donkey.Common.Answers;
 using System.IO;
 
 namespace Donkey.Common.ClientServer
 {
-    public class GameSerializer
+	public class GameSerializer
     {
         private readonly BinaryFormatter _serializer = new BinaryFormatter();
 

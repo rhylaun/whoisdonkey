@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Donkey.Common.Commands;
 using Donkey.Common;
 
 namespace Donkey.Server.CommandProcessors
 {
-    public class CommandProcessorFactory
+	public class CommandProcessorFactory
     {
         private static readonly Dictionary<CommandType, Type> _commandToProccesor = new Dictionary<CommandType, Type>();
 

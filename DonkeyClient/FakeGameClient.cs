@@ -239,5 +239,10 @@ namespace Donkey.Client
 		{
 			throw new NotImplementedException();
 		}
+
+		public List<string> GetServerInfo()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

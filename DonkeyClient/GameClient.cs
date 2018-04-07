@@ -329,5 +329,15 @@ namespace Donkey.Client
 			var command = new RemoveAICommand(AuthData, LobbyName, botName);
 			return SendCommand(command).Success;
 		}
+
+		public List<string> GetServerInfo()
+		{
+			var command = new GetServerInfoCommand(AuthData);
+			var result = SendCommand(command);
+
+			if (result.Success)
+				return ((GetServerInfoAnswer)result).BotNames;
+			return new List<string>();
+		}
 	}
 }

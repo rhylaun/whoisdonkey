@@ -174,6 +174,11 @@ namespace Donkey.Server
 			}
 		}
 
+		public List<string> GetBotNames()
+		{
+			return new List<string> { "Airin" };
+		}
+
 		public void Dispose()
 		{
 			_players.Clear();

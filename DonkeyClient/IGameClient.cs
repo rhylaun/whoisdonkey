@@ -32,5 +32,6 @@ namespace Donkey.Client
 
 		bool AddAI(string botName);
 		bool RemoveAI(string botName);
+		List<string> GetServerInfo();
 	}
 }

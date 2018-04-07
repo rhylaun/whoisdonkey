@@ -36,6 +36,7 @@ namespace Donkey.Common.Commands
 		GetCurrentGameState,
 		GetStatistic,
 		AddAI,
-		RemoveAI
+		RemoveAI,
+		GetServerInfo
 	}
 }

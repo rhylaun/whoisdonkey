@@ -1,21 +1,34 @@
 ﻿using Donkey.Client;
+using Donkey.Common;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUpdaterScript : MonoBehaviour {
+public class PlayerUpdaterScript : MonoBehaviour
+{
 
 	public GameObject ListViewContent;
 	public GameObject ListItemPrefab;
 
 	public void RefreshPlayers()
 	{
-		
 		var state = GameClientManager.Current.GetLobbyState();
 		ClearContent();
-		FillContent(state.Players.Select(x => x.Name).ToList());
+		FillContent(state.Players);
+	}
+
+	public void AddAI()
+	{
+		var client = GameClientManager.Current;
+		var botNames = client.GetServerInfo();
+		GameClientManager.Current.AddAI(botNames.First());
+		RefreshPlayers();
+	}
+
+	public void RemoveAI()
+	{
 	}
 
 	private void ClearContent()
@@ -29,16 +42,19 @@ public class PlayerUpdaterScript : MonoBehaviour {
 		}
 	}
 
-	private void FillContent(List<string> list)
+	private void FillContent(List<PlayerDescription> list)
 	{
-		foreach (var itemName in list)
+		foreach (var item in list)
 		{
 			var newItem = GameObject.Instantiate(ListItemPrefab);
-			var textComponent = newItem.GetComponent<Text>();
-			if (textComponent == null)
-				textComponent = newItem.transform.FindChild("Text").GetComponent<Text>();
-			textComponent.text = itemName;
-			newItem.name = itemName;
+
+			var userNameComponent = newItem.transform.FindChild("UserName").GetComponent<Text>();
+			userNameComponent.text = item.Name;
+
+			var userTypeComponent = newItem.transform.FindChild("PlayerType").GetComponent<Text>();
+			userTypeComponent.text = item.PlayerType == PlayerType.Human ? "Human" : "AI";
+
+			newItem.name = item.Name;
 			newItem.transform.SetParent(ListViewContent.transform);
 		}
 	}

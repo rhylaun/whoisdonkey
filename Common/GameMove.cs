@@ -10,7 +10,7 @@ namespace Donkey.Common
 		public MoveType MoveType;
 		public List<Card> Cards = new List<Card>();
 		public DateTime Date;
-		public AuthData Player;
+		public string PlayerName;
 		public int Index;
 
 		public GameMove()
@@ -28,7 +28,7 @@ namespace Donkey.Common
 			var result = new GameMove()
 			{
 				GameId = this.GameId,
-				Player = this.Player,
+				PlayerName = this.PlayerName,
 				MoveType = this.MoveType,
 				Index = this.Index,
 				Date = this.Date

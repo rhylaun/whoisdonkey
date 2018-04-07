@@ -7,7 +7,7 @@ namespace Donkey.Server
 	public class Lobby
 	{
 		private readonly object _locker = new object();
-		private readonly List<Player> _players = new List<Player>();
+		private readonly List<PlayerInLobbyDescription> _players = new List<PlayerInLobbyDescription>();
 
 		public string Name { get; private set; }
 		public Player Creator { get; private set; }
@@ -21,33 +21,31 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				if (_players.Contains(player))
+				if (_players.Any(x => x.Name == player.AuthData.Login))
 					return;
 
 				if (_players.Count == 0)
 					Creator = player;
 
-				_players.Add(player);
+				var newPlayer = new PlayerInLobbyDescription(player.AuthData.Login, PlayerType.Human);
+				_players.Add(newPlayer);
 			}
 		}
 
 		public void RemovePlayer(Player player)
 		{
 			lock (_locker)
-				_players.Remove(player);
+			{
+				var toDelete = _players.Single(x => x.Name == player.AuthData.Login);
+				_players.Remove(toDelete);
+			}
 		}
 
-		public IEnumerable<Player> GetPlayers()
-		{
-			lock (_locker)
-				return _players.ToList();
-		}
-
-		public PlayerInLobbyDescription[] GetState()
+		public PlayerInLobbyDescription[] GetPlayers()
 		{
 			lock (_locker)
 			{
-				var result = _players.Select(x => new PlayerInLobbyDescription(x.AuthData.Login, PlayerType.Human)).ToArray();
+				var result = _players.ToArray();
 				return result;
 			}
 		}

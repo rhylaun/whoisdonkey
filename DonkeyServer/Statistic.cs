@@ -13,9 +13,9 @@ namespace Donkey.Server
 
 		public void Insert(Guid gameId, GameHistory history)
 		{
-			var moveProcessor = new PlayProcessor(gameId);			
+			var moveProcessor = new PlayProcessor(gameId);
 			var moves = history.ToArray(0);
-			var players = moves.Select(x => x.Player).Distinct().ToArray();
+			var players = moves.Select(x => x.PlayerName).Distinct().ToArray();
 			var playersCardSets = new List<PlayerCardSet>();
 			for (int i = 0; i < players.Length; i++)
 				playersCardSets.Add(new PlayerCardSet());
@@ -27,20 +27,20 @@ namespace Donkey.Server
 					throw new Exception("Cannot process saved game");
 
 				if (moves[i].MoveType == MoveType.Take)
-					cardSet.GetPlayerCardset(moves[i].Player).Add(moves[i].Cards);
+					cardSet.GetPlayerCardset(moves[i].PlayerName).Add(moves[i].Cards);
 
-				if(moves[i].MoveType == MoveType.Drop)
-					cardSet.GetPlayerCardset(moves[i].Player).Extract(moves[i].Cards);
+				if (moves[i].MoveType == MoveType.Drop)
+					cardSet.GetPlayerCardset(moves[i].PlayerName).Extract(moves[i].Cards);
 			}
 
-			lock(_locker)
+			lock (_locker)
 			{
 				for (int i = 0; i < players.Length; i++)
 				{
-					if (!Records.Any(x => x.Name == players[i].Login))
-						Records.Add(new StatisticRecord(players[i].Login));
+					if (!Records.Any(x => x.Name == players[i]))
+						Records.Add(new StatisticRecord(players[i]));
 
-					var record = GetRecord(players[i].Login);
+					var record = GetRecord(players[i]);
 					var playerCardSet = cardSet.GetPlayerCardset(i);
 
 					record.GamesPlayed++;
@@ -52,7 +52,7 @@ namespace Donkey.Server
 
 		public StatisticRecord GetRecord(string name)
 		{
-			lock(_locker)
+			lock (_locker)
 				return Records.Single(x => x.Name == name);
 		}
 	}

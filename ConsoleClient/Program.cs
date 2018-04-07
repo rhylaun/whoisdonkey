@@ -181,13 +181,13 @@ namespace ConsoleClient
 				switch (history[i].MoveType)
 				{
 					case MoveType.Pass:
-						builder.AppendLine(string.Format("{1} : [{0}] pass his turn", history[i].Player.Login, history[i].Index));
+						builder.AppendLine(string.Format("{1} : [{0}] pass his turn", history[i].PlayerName, history[i].Index));
 						break;
 					case MoveType.Clear:
 						builder.AppendLine(string.Format("{0} : Board was cleared!", history[i].Index));
 						break;
 					case MoveType.Drop:
-						builder.Append(string.Format("{1} : [{0}] move with ", history[i].Player.Login, history[i].Index));
+						builder.Append(string.Format("{1} : [{0}] move with ", history[i].PlayerName, history[i].Index));
 						foreach (var card in history[i].Cards)
 							builder.Append(string.Format("[{0}]", card));
 						builder.AppendLine();

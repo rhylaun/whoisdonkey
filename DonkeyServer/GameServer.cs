@@ -55,6 +55,18 @@ namespace Donkey.Server
 			}
 		}
 
+		public Player GetPlayer(string playerName)
+		{
+			lock (_locker)
+			{
+				var player = _players.FirstOrDefault(x => x.AuthData.Login.Equals(playerName));
+				if (player == null)
+					throw new GameServerException("Player not found");
+
+				return player;
+			}
+		}
+
 		public bool HasPlayer(AuthData authData)
 		{
 			lock (_locker)
@@ -120,7 +132,7 @@ namespace Donkey.Server
 			lock (_locker)
 			{
 				foreach (var lobby in _lobbies)
-					if (lobby.GetPlayers().Contains(player))
+					if (lobby.GetPlayers().Any(x => x.Name == player.AuthData.Login))
 						return lobby;
 
 				throw new GameServerException("Lobby not found for specific player");
@@ -158,7 +170,7 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				return _games.Single(x => x.HasPlayer(player));
+				return _games.Single(x => x.HasPlayer(player.AuthData.Login));
 			}
 		}
 

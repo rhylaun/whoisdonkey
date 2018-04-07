@@ -31,14 +31,14 @@ namespace Donkey.Server
 			return currentWinnerMove.GetValue() <= pendingMove.GetValue();
 		}
 
-		public GameMove GetTakeMove(AuthData player, List<Card> cards)
+		public GameMove GetTakeMove(string playerName, List<Card> cards)
 		{
 			var move = new GameMove()
 			{
 				MoveType = MoveType.Take,
 				Cards = cards,
 				Date = DateTime.UtcNow,
-				Player = player
+				PlayerName = playerName
 			};
 			return move;
 

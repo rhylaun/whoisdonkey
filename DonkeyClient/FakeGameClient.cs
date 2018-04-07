@@ -21,8 +21,8 @@ namespace Donkey.Client
 			_lobbies.Add("test_lobby");
 
 			_history.Add(new GameMove() { MoveType = MoveType.Clear, Index = 0, });
-			_history.Add(new GameMove() { MoveType = MoveType.Drop, Index = 1, Player = new AuthData("test2", ""), Cards = new List<Card> { Card.One, Card.One, Card.One } });
-			_history.Add(new GameMove() { MoveType = MoveType.Pass, Index = 2, Player = new AuthData("test3", ""), });
+			_history.Add(new GameMove() { MoveType = MoveType.Drop, Index = 1, PlayerName = "test2", Cards = new List<Card> { Card.One, Card.One, Card.One } });
+			_history.Add(new GameMove() { MoveType = MoveType.Pass, Index = 2, PlayerName = "test3", });
 			_history.Add(new GameMove() { MoveType = MoveType.Clear, Index = 3, });
 
 			_cardSet = new PlayerCardSet();

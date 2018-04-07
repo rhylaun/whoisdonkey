@@ -29,7 +29,7 @@ namespace Donkey.Server.Storage
 
 		public List<Guid> GetSavedGames()
 		{
-			lock(_gameFilesCache)
+			lock (_gameFilesCache)
 				return _gameFilesCache.Keys.ToList();
 		}
 
@@ -57,7 +57,7 @@ namespace Donkey.Server.Storage
 
 			var gameSaves = dirInfo.GetFiles("*." + DbGameSaveExtention).ToList();
 			lock (_gameFilesCache)
-			foreach (var gs in gameSaves)
+				foreach (var gs in gameSaves)
 				{
 					var guidStr = gs.Name.Replace("." + DbGameSaveExtention, string.Empty);
 					var gameId = new Guid(guidStr);
@@ -126,7 +126,7 @@ namespace Donkey.Server.Storage
 				{
 					command.Parameters.AddWithValue("$moveindex", gameMove.Index);
 					command.Parameters.AddWithValue("$move", gameMove.MoveType.ToString());
-					command.Parameters.AddWithValue("$name", gameMove.Player.Login);
+					command.Parameters.AddWithValue("$name", gameMove.PlayerName);
 					command.Parameters.AddWithValue("$date", gameMove.Date);
 					command.Parameters.AddWithValue("$cards", DbRequestHelper.ConvertCardList(gameMove.Cards));
 					command.ExecuteNonQuery();
@@ -156,7 +156,7 @@ namespace Donkey.Server.Storage
 							var move = new GameMove();
 							move.Index = reader.GetInt32(0);
 							move.MoveType = (MoveType)Enum.Parse(typeof(MoveType), reader.GetString(1));
-							move.Player = new AuthData(reader.GetString(2), string.Empty);
+							move.PlayerName = reader.GetString(2);
 							move.Date = reader.GetDateTime(3);
 							move.Cards = DbRequestHelper.ConvertCardString(reader.GetString(4));
 							move.GameId = gameId;

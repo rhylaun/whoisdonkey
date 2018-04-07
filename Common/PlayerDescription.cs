@@ -3,12 +3,12 @@
 namespace Donkey.Common
 {
 	[Serializable]
-	public class PlayerInLobbyDescription
+	public class PlayerDescription
 	{
 		public readonly string Name;
 		public readonly PlayerType PlayerType;
 
-		public PlayerInLobbyDescription(string name, PlayerType playerType)
+		public PlayerDescription(string name, PlayerType playerType)
 		{
 			Name = name;
 			PlayerType = playerType;

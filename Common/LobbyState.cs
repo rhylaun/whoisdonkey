@@ -7,9 +7,9 @@ namespace Donkey.Common
 	public class LobbyState
 	{
 		public readonly string Creator;
-		public readonly List<PlayerInLobbyDescription> Players;
+		public readonly List<PlayerDescription> Players;
 
-		public LobbyState(string creator, List<PlayerInLobbyDescription> players)
+		public LobbyState(string creator, List<PlayerDescription> players)
 		{
 			Creator = creator;
 			Players = players;

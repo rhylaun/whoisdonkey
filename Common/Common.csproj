@@ -129,7 +129,7 @@
     <Compile Include="GameHistory.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="LobbyState.cs" />
-    <Compile Include="PlayerInLobbyDescription.cs" />
+    <Compile Include="PlayerDescription.cs" />
     <Compile Include="PlayerStateMatrix.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="RegisterClientCommandAttribute.cs" />

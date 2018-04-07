@@ -10,8 +10,8 @@ namespace Donkey.Server
 	{
 		private readonly object _locker = new object();
 
-		private readonly List<PlayerInLobbyDescription> _registredPlayers;
-		private readonly List<PlayerInLobbyDescription> _ingamePlayers;
+		private readonly List<PlayerDescription> _registredPlayers;
+		private readonly List<PlayerDescription> _ingamePlayers;
 		private readonly GameCardSet _cardSet;
 		private readonly PlayProcessor _moveProcessor;
 		private readonly Database _database;
@@ -29,8 +29,8 @@ namespace Donkey.Server
 		public readonly string Name;
 		public readonly Guid Id;
 
-		private PlayerInLobbyDescription _currentTurnPlayer;
-		public PlayerInLobbyDescription CurrentTurnPlayer
+		private PlayerDescription _currentTurnPlayer;
+		public PlayerDescription CurrentTurnPlayer
 		{
 			get
 			{
@@ -47,7 +47,7 @@ namespace Donkey.Server
 			Name = lobby.Name;
 			_database = database;
 			_moveProcessor = new PlayProcessor(Id);
-			_registredPlayers = new List<PlayerInLobbyDescription>(lobby.GetPlayers());
+			_registredPlayers = new List<PlayerDescription>(lobby.GetPlayers());
 			_ingamePlayers = _registredPlayers.ToList();
 			_cardSet = CardShuffler.GetCardSet(_registredPlayers.Count);
 			_cardSet.BindPlayers(_registredPlayers.Select(x => x.Name).ToArray());

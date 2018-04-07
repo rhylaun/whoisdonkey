@@ -7,7 +7,7 @@ namespace Donkey.Server
 	public class Lobby
 	{
 		private readonly object _locker = new object();
-		private readonly List<PlayerInLobbyDescription> _players = new List<PlayerInLobbyDescription>();
+		private readonly List<PlayerDescription> _players = new List<PlayerDescription>();
 
 		public string Name { get; private set; }
 		public Player Creator { get; private set; }
@@ -27,7 +27,7 @@ namespace Donkey.Server
 				if (_players.Count == 0)
 					Creator = player;
 
-				var newPlayer = new PlayerInLobbyDescription(player.AuthData.Login, PlayerType.Human);
+				var newPlayer = new PlayerDescription(player.AuthData.Login, PlayerType.Human);
 				_players.Add(newPlayer);
 			}
 		}
@@ -41,7 +41,7 @@ namespace Donkey.Server
 			}
 		}
 
-		public PlayerInLobbyDescription[] GetPlayers()
+		public PlayerDescription[] GetPlayers()
 		{
 			lock (_locker)
 			{

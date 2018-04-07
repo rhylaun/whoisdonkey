@@ -32,11 +32,33 @@ namespace Donkey.Server
 			}
 		}
 
+		public void AddAI(string botName)
+		{
+			lock (_locker)
+			{
+				if (_players.Any(x => x.Name == botName))
+					return;
+
+				var newPlayer = new PlayerDescription(botName, PlayerType.AI);
+				_players.Add(newPlayer);
+			}
+
+		}
+
 		public void RemovePlayer(Player player)
 		{
 			lock (_locker)
 			{
 				var toDelete = _players.Single(x => x.Name == player.AuthData.Login);
+				_players.Remove(toDelete);
+			}
+		}
+
+		public void RemoveAI(string botName)
+		{
+			lock (_locker)
+			{
+				var toDelete = _players.Single(x => x.Name == botName);
 				_players.Remove(toDelete);
 			}
 		}

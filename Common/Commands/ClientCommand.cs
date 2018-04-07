@@ -34,6 +34,8 @@ namespace Donkey.Common.Commands
 		GetState,
 		GetCardSet,
 		GetCurrentGameState,
-		GetStatistic
+		GetStatistic,
+		AddAI,
+		RemoveAI
 	}
 }

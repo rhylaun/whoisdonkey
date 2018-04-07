@@ -79,6 +79,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Answers\RemoveAIAnswer.cs" />
+    <Compile Include="Answers\AddAIAnswer.cs" />
     <Compile Include="Answers\GetLobbyStateAnswer.cs" />
     <Compile Include="Answers\GetStatisticAnswer.cs" />
     <Compile Include="Answers\AuthAnswer.cs" />
@@ -101,11 +103,13 @@
     <Compile Include="CardListValueHelper.cs" />
     <Compile Include="CardStack.cs" />
     <Compile Include="ClientServer\TcpNetworkClient.cs" />
+    <Compile Include="Commands\RemoveAICommand.cs" />
     <Compile Include="Commands\GetLobbyStateCommand.cs" />
     <Compile Include="Commands\GetStatisticCommand.cs" />
     <Compile Include="Commands\GetCardSetCommand.cs" />
     <Compile Include="Commands\GetCurrentGameStateCommand.cs" />
     <Compile Include="Commands\GetStateCommand.cs" />
+    <Compile Include="Commands\AddAICommand.cs" />
     <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="ConsoleCommandInfoAttribute.cs" />
     <Compile Include="ClientServer\CommandSender.cs" />

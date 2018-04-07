@@ -229,5 +229,15 @@ namespace Donkey.Client
 			var result = new LobbyState(AuthData.Login, list);
 			return result;
 		}
+
+		public bool AddAI(string botName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool RemoveAI(string botName)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

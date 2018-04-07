@@ -311,5 +311,23 @@ namespace Donkey.Client
 				return (((GetLobbyStateAnswer)result).State);
 			return new LobbyState("", null);
 		}
+
+		public bool AddAI(string botName)
+		{
+			if (string.IsNullOrEmpty(LobbyName))
+				throw new InvalidOperationException("Cannot add AI while not in lobby");
+
+			var command = new AddAICommand(AuthData, LobbyName, botName);
+			return SendCommand(command).Success;
+		}
+
+		public bool RemoveAI(string botName)
+		{
+			if (string.IsNullOrEmpty(LobbyName))
+				throw new InvalidOperationException("Cannot remove AI while not in lobby");
+
+			var command = new RemoveAICommand(AuthData, LobbyName, botName);
+			return SendCommand(command).Success;
+		}
 	}
 }

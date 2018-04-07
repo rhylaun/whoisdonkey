@@ -14,8 +14,8 @@ namespace Donkey.Client
 
 		List<Card> GetCards();
 		GameMove[] GetHistory(int fromIndex);
-        GameMove[] GetHistory();
-        List<string> GetLobbies();
+		GameMove[] GetHistory();
+		List<string> GetLobbies();
 		List<string> GetPlayers();
 		LobbyState GetLobbyState();
 
@@ -29,5 +29,8 @@ namespace Donkey.Client
 		bool MakeMove(List<Card> cards);
 		bool Update();
 		StatisticRecord[] GetStatistics();
+
+		bool AddAI(string botName);
+		bool RemoveAI(string botName);
 	}
 }

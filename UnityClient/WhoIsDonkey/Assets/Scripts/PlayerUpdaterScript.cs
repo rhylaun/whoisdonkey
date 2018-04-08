@@ -1,6 +1,5 @@
 ﻿using Donkey.Client;
 using Donkey.Common;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,13 +21,15 @@ public class PlayerUpdaterScript : MonoBehaviour
 	public void AddAI()
 	{
 		var client = GameClientManager.Current;
-		var botNames = client.GetServerInfo();
-		GameClientManager.Current.AddAI(botNames.First());
+		var aiNames = client.GetServerInfo();
+		GameClientManager.Current.AddAI(aiNames.First());
 		RefreshPlayers();
 	}
 
-	public void RemoveAI()
+	public void RemoveAI(string aiName)
 	{
+		GameClientManager.Current.RemoveAI(aiName);
+		RefreshPlayers();
 	}
 
 	private void ClearContent()
@@ -53,6 +54,17 @@ public class PlayerUpdaterScript : MonoBehaviour
 
 			var userTypeComponent = newItem.transform.FindChild("PlayerType").GetComponent<Text>();
 			userTypeComponent.text = item.PlayerType == PlayerType.Human ? "Human" : "AI";
+
+			var button = newItem.transform.FindChild("RemovePlayerButton");
+			if (item.PlayerType == PlayerType.Human)
+			{
+				button.gameObject.SetActive(false);
+			}
+			if (item.PlayerType == PlayerType.AI)
+			{
+				var btnComponent = button.GetComponent<Button>();
+				btnComponent.onClick.AddListener(() => RemoveAI(item.Name));
+			}
 
 			newItem.name = item.Name;
 			newItem.transform.SetParent(ListViewContent.transform);

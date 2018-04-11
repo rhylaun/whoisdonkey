@@ -13,6 +13,7 @@ namespace Donkey.Server
 		private readonly List<Player> _players = new List<Player>();
 		private readonly List<Lobby> _lobbies = new List<Lobby>();
 		private readonly List<Game> _games = new List<Game>();
+		private readonly AIFactory _aiFactory;
 
 		private Database _database;
 		public Database Database
@@ -24,6 +25,11 @@ namespace Donkey.Server
 		public Statistic Statistic
 		{
 			get { return _statistic; }
+		}
+
+		public GameServer(AIFactory aiFactory)
+		{
+			_aiFactory = aiFactory;
 		}
 
 		public void Load()
@@ -159,7 +165,7 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				var game = new Game(lobby, Database);
+				var game = new Game(lobby, Database, _aiFactory);
 				_games.Add(game);
 				_lobbies.Remove(lobby);
 				return game;
@@ -176,7 +182,7 @@ namespace Donkey.Server
 
 		public List<string> GetBotNames()
 		{
-			return new List<string> { "Airin" };
+			return _aiFactory.GetNames();
 		}
 
 		public void Dispose()

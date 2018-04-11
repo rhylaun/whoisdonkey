@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Donkey.Common;
 using Donkey.Server.Storage;
+using Donkey.Common.AI;
+using System.Threading;
 
 namespace Donkey.Server
 {
@@ -15,6 +17,8 @@ namespace Donkey.Server
 		private readonly GameCardSet _cardSet;
 		private readonly PlayProcessor _moveProcessor;
 		private readonly Database _database;
+		private readonly Dictionary<PlayerDescription, IAIModule> _aiInstances = new Dictionary<PlayerDescription, IAIModule>();
+		private readonly Thread _aiThread;
 
 		private bool _ended = false;
 		public bool Ended
@@ -41,7 +45,7 @@ namespace Donkey.Server
 			}
 		}
 
-		public Game(Lobby lobby, Database database)
+		public Game(Lobby lobby, Database database, AIFactory aiFactory)
 		{
 			Id = Guid.NewGuid();
 			Name = lobby.Name;
@@ -63,6 +67,15 @@ namespace Donkey.Server
 			var emptyMove = _moveProcessor.GenerateMove(_registredPlayers.First().Name, MoveType.Clear, new List<Card>());
 			_moveProcessor.Append(emptyMove);
 			_database.WriteGameMove(emptyMove);
+
+			var aiPlayers = _registredPlayers.Where(x => x.PlayerType == PlayerType.AI).ToList();
+			foreach (var ai in aiPlayers)
+			{
+				var aiModule = aiFactory.CreateInstance(ai.Name);
+				_aiInstances.Add(ai, aiModule);
+			}
+
+			_aiThread = new Thread(AIWorkFunc);
 		}
 
 		public void Start()
@@ -75,6 +88,7 @@ namespace Donkey.Server
 						_currentTurnPlayer = player;
 				}
 			}
+			_aiThread.Start();
 		}
 
 		public int GetHumanCount()
@@ -155,9 +169,10 @@ namespace Donkey.Server
 
 		public GameMove[] GetHistory(Player player, int fromIndex)
 		{
+			var login = player.AuthData.Login;
 			var moves = _moveProcessor.GetHistory(fromIndex);
 			foreach (var move in moves)
-				if (move.MoveType == MoveType.Take && !player.AuthData.Equals(move.PlayerName))
+				if (move.MoveType == MoveType.Take && !login.Equals(move.PlayerName))
 					for (int i = 0; i < move.Cards.Count; i++)
 						move.Cards[i] = Card.Hidden;
 			return moves;
@@ -205,6 +220,33 @@ namespace Donkey.Server
 				}
 
 			return false;
+		}
+
+		private void AIWorkFunc()
+		{
+			while (!Ended)
+			{
+				try
+				{
+
+					Thread.Sleep(200);
+
+					if (CurrentTurnPlayer.PlayerType != PlayerType.AI)
+						continue;
+
+					var currentPlayer = CurrentTurnPlayer;
+					var currentAI = _aiInstances[currentPlayer];
+
+					var history = _moveProcessor.GetHistory(0);
+					var hand = _cardSet.GetPlayerCardset(currentPlayer.Name);
+					var gameMove = currentAI.ProcessMove(history, hand);
+					gameMove = CreateMove(currentPlayer.Name, gameMove.MoveType, gameMove.Cards);
+					MakeMove(gameMove);
+				}
+				catch (Exception ex)
+				{
+				}
+			}
 		}
 	}
 }

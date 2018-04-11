@@ -115,6 +115,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AIFactory.cs" />
     <Compile Include="CardShuffler.cs" />
     <Compile Include="CommandCreator.cs" />
     <Compile Include="CommandProcessorInfoAttribute.cs" />
@@ -168,6 +169,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{d824eb30-1a7e-41df-b5ec-979c7b27ee99}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DonkeyAI\DonkeyAI.csproj">
+      <Project>{1dba8680-812e-4098-8c1f-bcd17ac8a18f}</Project>
+      <Name>DonkeyAI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

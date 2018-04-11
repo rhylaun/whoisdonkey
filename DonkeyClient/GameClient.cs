@@ -196,7 +196,7 @@ namespace Donkey.Client
 
 		private void ProcessMove(GameMove move)
 		{
-			if (move.PlayerName != null && !move.PlayerName.Equals(AuthData))
+			if (move.PlayerName != null && !move.PlayerName.Equals(AuthData.Login))
 				return;
 
 			if (move.MoveType == MoveType.Drop)

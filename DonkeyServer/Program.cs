@@ -2,6 +2,7 @@
 using Donkey.Server.CommandProcessors;
 using Donkey.Common;
 using Donkey.Common.Commands;
+using System.Reflection;
 
 namespace Donkey.Server
 {
@@ -17,8 +18,14 @@ namespace Donkey.Server
 			Console.WriteLine("Initializing processors factory...");
 			CommandProcessorFactory.Init();
 
+			Console.WriteLine("Loading AI modules...");
+			var aiAssembly = Assembly.LoadFrom("DonkeyAI.dll");
+			AppDomain.CurrentDomain.Load(aiAssembly.FullName);
+			var aiFactory = new AIFactory();
+			aiFactory.Init();
+
 			Console.WriteLine("Initializing game server... ");
-			using (var gameServer = new GameServer())
+			using (var gameServer = new GameServer(aiFactory))
 			{
 				gameServer.Load();
 

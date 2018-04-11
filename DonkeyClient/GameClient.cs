@@ -196,7 +196,7 @@ namespace Donkey.Client
 
 		private void ProcessMove(GameMove move)
 		{
-			if (move.Player != null && !move.Player.Equals(AuthData))
+			if (move.PlayerName != null && !move.PlayerName.Equals(AuthData.Login))
 				return;
 
 			if (move.MoveType == MoveType.Drop)
@@ -310,6 +310,34 @@ namespace Donkey.Client
 			if (result.Success)
 				return (((GetLobbyStateAnswer)result).State);
 			return new LobbyState("", null);
+		}
+
+		public bool AddAI(string botName)
+		{
+			if (string.IsNullOrEmpty(LobbyName))
+				throw new InvalidOperationException("Cannot add AI while not in lobby");
+
+			var command = new AddAICommand(AuthData, LobbyName, botName);
+			return SendCommand(command).Success;
+		}
+
+		public bool RemoveAI(string botName)
+		{
+			if (string.IsNullOrEmpty(LobbyName))
+				throw new InvalidOperationException("Cannot remove AI while not in lobby");
+
+			var command = new RemoveAICommand(AuthData, LobbyName, botName);
+			return SendCommand(command).Success;
+		}
+
+		public List<string> GetServerInfo()
+		{
+			var command = new GetServerInfoCommand(AuthData);
+			var result = SendCommand(command);
+
+			if (result.Success)
+				return ((GetServerInfoAnswer)result).BotNames;
+			return new List<string>();
 		}
 	}
 }

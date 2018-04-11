@@ -8,8 +8,8 @@ namespace Donkey.Server.CommandProcessors
 	public class CurrentGameStateCommandProcessor : BaseCommandProcessor
 	{
 		public CurrentGameStateCommandProcessor(ClientCommand command)
-            : base(command)
-        {
+			: base(command)
+		{
 		}
 
 		protected override bool Process(GameServer server)
@@ -21,7 +21,7 @@ namespace Donkey.Server.CommandProcessors
 			{
 				var player = server.GetPlayer(Command.AuthData);
 				var game = server.GetGameByPlayer(player);
-				name = game.CurrentTurnPlayer.AuthData.Login;
+				name = game.CurrentTurnPlayer.Name;
 				gameEnded = game.Ended;
 			}
 			catch (GameServerException)

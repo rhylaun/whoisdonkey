@@ -79,6 +79,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\AIModuleAttribute.cs" />
+    <Compile Include="Answers\GetServerInfoAnswer.cs" />
+    <Compile Include="Answers\RemoveAIAnswer.cs" />
+    <Compile Include="Answers\AddAIAnswer.cs" />
     <Compile Include="Answers\GetLobbyStateAnswer.cs" />
     <Compile Include="Answers\GetStatisticAnswer.cs" />
     <Compile Include="Answers\AuthAnswer.cs" />
@@ -101,11 +105,14 @@
     <Compile Include="CardListValueHelper.cs" />
     <Compile Include="CardStack.cs" />
     <Compile Include="ClientServer\TcpNetworkClient.cs" />
+    <Compile Include="Commands\GetServerInfoCommand.cs" />
+    <Compile Include="Commands\RemoveAICommand.cs" />
     <Compile Include="Commands\GetLobbyStateCommand.cs" />
     <Compile Include="Commands\GetStatisticCommand.cs" />
     <Compile Include="Commands\GetCardSetCommand.cs" />
     <Compile Include="Commands\GetCurrentGameStateCommand.cs" />
     <Compile Include="Commands\GetStateCommand.cs" />
+    <Compile Include="Commands\AddAICommand.cs" />
     <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="ConsoleCommandInfoAttribute.cs" />
     <Compile Include="ClientServer\CommandSender.cs" />
@@ -128,8 +135,9 @@
     <Compile Include="Commands\StartGameCommand.cs" />
     <Compile Include="GameHistory.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="AI\IAIModule.cs" />
     <Compile Include="LobbyState.cs" />
-    <Compile Include="PlayerInLobbyDescription.cs" />
+    <Compile Include="PlayerDescription.cs" />
     <Compile Include="PlayerStateMatrix.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="RegisterClientCommandAttribute.cs" />

@@ -13,6 +13,7 @@ namespace Donkey.Server
 		private readonly List<Player> _players = new List<Player>();
 		private readonly List<Lobby> _lobbies = new List<Lobby>();
 		private readonly List<Game> _games = new List<Game>();
+		private readonly AIFactory _aiFactory;
 
 		private Database _database;
 		public Database Database
@@ -24,6 +25,11 @@ namespace Donkey.Server
 		public Statistic Statistic
 		{
 			get { return _statistic; }
+		}
+
+		public GameServer(AIFactory aiFactory)
+		{
+			_aiFactory = aiFactory;
 		}
 
 		public void Load()
@@ -48,6 +54,18 @@ namespace Donkey.Server
 			lock (_locker)
 			{
 				var player = _players.FirstOrDefault(x => x.AuthData.Equals(authData));
+				if (player == null)
+					throw new GameServerException("Player not found");
+
+				return player;
+			}
+		}
+
+		public Player GetPlayer(string playerName)
+		{
+			lock (_locker)
+			{
+				var player = _players.FirstOrDefault(x => x.AuthData.Login.Equals(playerName));
 				if (player == null)
 					throw new GameServerException("Player not found");
 
@@ -120,7 +138,7 @@ namespace Donkey.Server
 			lock (_locker)
 			{
 				foreach (var lobby in _lobbies)
-					if (lobby.GetPlayers().Contains(player))
+					if (lobby.GetPlayers().Any(x => x.Name == player.AuthData.Login))
 						return lobby;
 
 				throw new GameServerException("Lobby not found for specific player");
@@ -147,7 +165,7 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				var game = new Game(lobby, Database);
+				var game = new Game(lobby, Database, _aiFactory);
 				_games.Add(game);
 				_lobbies.Remove(lobby);
 				return game;
@@ -158,8 +176,13 @@ namespace Donkey.Server
 		{
 			lock (_locker)
 			{
-				return _games.Single(x => x.HasPlayer(player));
+				return _games.Single(x => x.HasPlayer(player.AuthData.Login));
 			}
+		}
+
+		public List<string> GetBotNames()
+		{
+			return _aiFactory.GetNames();
 		}
 
 		public void Dispose()

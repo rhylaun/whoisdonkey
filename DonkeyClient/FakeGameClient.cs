@@ -21,8 +21,8 @@ namespace Donkey.Client
 			_lobbies.Add("test_lobby");
 
 			_history.Add(new GameMove() { MoveType = MoveType.Clear, Index = 0, });
-			_history.Add(new GameMove() { MoveType = MoveType.Drop, Index = 1, Player = new AuthData("test2", ""), Cards = new List<Card> { Card.One, Card.One, Card.One } });
-			_history.Add(new GameMove() { MoveType = MoveType.Pass, Index = 2, Player = new AuthData("test3", ""), });
+			_history.Add(new GameMove() { MoveType = MoveType.Drop, Index = 1, PlayerName = "test2", Cards = new List<Card> { Card.One, Card.One, Card.One } });
+			_history.Add(new GameMove() { MoveType = MoveType.Pass, Index = 2, PlayerName = "test3", });
 			_history.Add(new GameMove() { MoveType = MoveType.Clear, Index = 3, });
 
 			_cardSet = new PlayerCardSet();
@@ -222,12 +222,27 @@ namespace Donkey.Client
 
 		public LobbyState GetLobbyState()
 		{
-			var p1 = new PlayerInLobbyDescription("test_name", PlayerType.Human);
-			var p2 = new PlayerInLobbyDescription("not_ready_yet", PlayerType.AI);
-			var list = new List<PlayerInLobbyDescription> { p1, p2 };
+			var p1 = new PlayerDescription("test_name", PlayerType.Human);
+			var p2 = new PlayerDescription("not_ready_yet", PlayerType.AI);
+			var list = new List<PlayerDescription> { p1, p2 };
 
 			var result = new LobbyState(AuthData.Login, list);
 			return result;
+		}
+
+		public bool AddAI(string botName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool RemoveAI(string botName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public List<string> GetServerInfo()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

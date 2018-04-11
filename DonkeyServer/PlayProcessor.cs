@@ -11,7 +11,7 @@ namespace Donkey.Server
 		private readonly GameHistory _history;
 		private readonly CardStack _cardStack;
 		private IRoundRules _roundRules;
-		private AuthData _endRoundPlayer;
+		private string _endRoundPlayerName;
 		private GameMove _winningMove;
 		private int _denyDonkeyMoveInRounds = 0;
 
@@ -35,7 +35,7 @@ namespace Donkey.Server
 				if (_denyDonkeyMoveInRounds > 0)
 					_denyDonkeyMoveInRounds--;
 				_winningMove = null;
-				_endRoundPlayer = move.Player;
+				_endRoundPlayerName = move.PlayerName;
 				return true;
 			}
 
@@ -52,7 +52,7 @@ namespace Donkey.Server
 
 				_history.Add(move);
 				_cardStack.Push(move.Cards);
-				_endRoundPlayer = move.Player;
+				_endRoundPlayerName = move.PlayerName;
 
 				_roundRules = new DonkeyRoundRules();
 				_denyDonkeyMoveInRounds = 2;
@@ -75,10 +75,10 @@ namespace Donkey.Server
 		{
 			var result = new List<GameMove>();
 
-			var clearMove = GenerateMove(_winningMove.Player, MoveType.Clear, new List<Card>());
+			var clearMove = GenerateMove(_winningMove.PlayerName, MoveType.Clear, new List<Card>());
 			result.Add(clearMove);
 
-			var takeMove = _roundRules.GetTakeMove(_winningMove.Player, _cardStack.PopAll());
+			var takeMove = _roundRules.GetTakeMove(_winningMove.PlayerName, _cardStack.PopAll());
 			takeMove.GameId = _gameId;
 			takeMove.Index = clearMove.Index + 1;
 
@@ -91,7 +91,7 @@ namespace Donkey.Server
 			return result;
 		}
 
-		public GameMove GenerateMove(AuthData player, MoveType moveType, List<Card> cards)
+		public GameMove GenerateMove(string playername, MoveType moveType, List<Card> cards)
 		{
 			var index = 0;
 			if (_history.Count > 0)
@@ -101,7 +101,7 @@ namespace Donkey.Server
 				Cards = cards,
 				GameId = _gameId,
 				MoveType = moveType,
-				Player = player,
+				PlayerName = playername,
 				Date = DateTime.UtcNow,
 				Index = index
 			};
@@ -113,17 +113,17 @@ namespace Donkey.Server
 			return _history.ToArray(fromIndex);
 		}
 
-		public AuthData GetEndRoundPlayer()
+		public string GetEndRoundPlayerName()
 		{
-			return _endRoundPlayer;
+			return _endRoundPlayerName;
 		}
 
-		public AuthData GetRoundWinner()
+		public string GetRoundWinner()
 		{
 			if (_winningMove == null)
 				return null;
 
-			return _winningMove.Player;
+			return _winningMove.PlayerName;
 		}
 	}
 }

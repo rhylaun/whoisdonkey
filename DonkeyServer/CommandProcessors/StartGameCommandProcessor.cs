@@ -28,6 +28,16 @@ namespace Donkey.Server.CommandProcessors
 
 				server.RemoveLobby(lobby);
 				var game = server.CreateGame(lobby);
+
+				var playersInGame = lobby.GetPlayers();
+				foreach (var p in playersInGame)
+				{
+					if (p.PlayerType != PlayerType.Human)
+						continue;
+					var humanPlayer = server.GetPlayer(p.Name);
+					humanPlayer.JoinGame();
+				}
+
 				game.Start();
 			}
 			catch (GameServerException)

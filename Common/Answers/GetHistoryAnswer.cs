@@ -23,13 +23,13 @@ namespace Donkey.Common.Answers
 				switch (History[i].MoveType)
 				{
 					case MoveType.Pass:
-						builder.AppendLine(String.Format("[{0}] pass his turn", History[i].Player.Login, "Pass"));
+						builder.AppendLine(String.Format("[{0}] pass his turn", History[i].PlayerName, "Pass"));
 						break;
 					case MoveType.Clear:
 						builder.AppendLine("Board was cleared!");
 						break;
 					case MoveType.Drop:
-						builder.Append(String.Format("[{0}] move with ", History[i].Player.Login));
+						builder.Append(String.Format("[{0}] move with ", History[i].PlayerName));
 						foreach (var card in History[i].Cards)
 							builder.AppendFormat("[{0}]", card);
 						builder.AppendLine();

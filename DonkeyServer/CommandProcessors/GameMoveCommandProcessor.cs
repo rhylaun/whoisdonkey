@@ -23,10 +23,10 @@ namespace Donkey.Server.CommandProcessors
 				if (game.Ended)
 				{
 					Answer = new GameMoveAnswer(false);
-					return false;					
+					return false;
 				}
 
-				var move = game.CreateMove(player, command.MoveType, command.Cards);
+				var move = game.CreateMove(player.AuthData.Login, command.MoveType, command.Cards);
 				result = game.MakeMove(move);
 			}
 			catch (GameServerException)

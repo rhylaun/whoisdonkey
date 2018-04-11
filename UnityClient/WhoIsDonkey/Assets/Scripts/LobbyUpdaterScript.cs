@@ -15,7 +15,7 @@ public class LobbyUpdaterScript : MonoBehaviour
 		ClearContent();
 		FillContent(lobbies);
 	}
-
+	
 	private void ClearContent()
 	{
 		var count = ListViewContent.transform.childCount;

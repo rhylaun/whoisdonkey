@@ -36,5 +36,3 @@ public class LoginScript : MonoBehaviour
 			return;
 	}
 }
-
-

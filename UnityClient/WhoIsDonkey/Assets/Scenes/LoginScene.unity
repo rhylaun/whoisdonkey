@@ -1444,6 +1444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: {fileID: 557819795}
+  LoginForm: {fileID: 40912697}
 --- !u!224 &1322423495
 RectTransform:
   m_ObjectHideFlags: 0

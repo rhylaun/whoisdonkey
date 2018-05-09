@@ -10,6 +10,7 @@ public class PlayerUpdaterScript : MonoBehaviour
 
 	public GameObject ListViewContent;
 	public GameObject ListItemPrefab;
+	public GameObject AiDropdown;
 
 	public void RefreshPlayers()
 	{
@@ -20,9 +21,9 @@ public class PlayerUpdaterScript : MonoBehaviour
 
 	public void AddAI()
 	{
-		var client = GameClientManager.Current;
-		var aiNames = client.GetServerInfo();
-		GameClientManager.Current.AddAI(aiNames.First());
+		var dropdown = AiDropdown.GetComponent<Dropdown>();
+		var aiName = dropdown.captionText.text;
+		GameClientManager.Current.AddAI(aiName);
 		RefreshPlayers();
 	}
 

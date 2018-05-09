@@ -11,13 +11,15 @@ namespace Donkey.Client
 {
 	public class GameClient<TNetworkClient> : IGameClient where TNetworkClient : INetworkClient, new()
 	{
-		private readonly object _checkLocker = new object();
+		private readonly object _playerStateLocker = new object();
+		private readonly object _gameStateLocker = new object();
 
 		private readonly IPEndPoint _endPoint;
 		private CommandSender<TNetworkClient> _commandSender;
 		private readonly GameHistory _history = new GameHistory();
 
 		private readonly Thread _checkStateThread;
+		private readonly Thread _gameUpdateThread;
 
 		private PlayerCardSet _cardSet;
 		private GameState _currentGameState;
@@ -30,12 +32,12 @@ namespace Donkey.Client
 		{
 			get
 			{
-				lock (_checkLocker)
+				lock (_playerStateLocker)
 					return _state;
 			}
 			private set
 			{
-				lock (_checkLocker)
+				lock (_playerStateLocker)
 					_state = value;
 			}
 		}
@@ -56,10 +58,7 @@ namespace Donkey.Client
 		{
 			get
 			{
-				lock (_checkLocker)
-				{
-					return AuthData.Login.Equals(_currentGameState.ActivePlayerName, StringComparison.InvariantCulture);
-				}
+				return AuthData.Login.Equals(_currentGameState.ActivePlayerName, StringComparison.InvariantCulture);
 			}
 		}
 
@@ -67,8 +66,11 @@ namespace Donkey.Client
 		{
 			get
 			{
-				lock (_checkLocker)
+				lock (_gameStateLocker)
 				{
+					if (_currentGameState == null)
+						return new GameState("...", false);
+
 					return _currentGameState;
 				}
 			}
@@ -86,7 +88,32 @@ namespace Donkey.Client
 				IsBackground = true
 			};
 			_checkStateThread.Start();
+			_gameUpdateThread = new Thread(GameUpdateRoutine)
+			{
+				IsBackground = true
+			};
+			_gameUpdateThread.Start();
 
+		}
+
+		private void GameUpdateRoutine()
+		{
+			while (true)
+			{
+				try
+				{
+					Thread.Sleep(900);
+					if (State != PlayerState.Game)
+						continue;
+
+					CheckCurrentPlayer();
+					Update();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("Error in checking thread: " + ex.Message);
+				}
+			}
 		}
 
 		private void InitGameState()
@@ -102,13 +129,7 @@ namespace Donkey.Client
 				try
 				{
 					Thread.Sleep(1000);
-					if (!CheckState())
-						continue;
-
-					if (State != PlayerState.Game)
-						continue;
-
-					CheckCurrentPlayer();
+					CheckState();
 				}
 				catch (Exception ex)
 				{
@@ -119,11 +140,8 @@ namespace Donkey.Client
 
 		private ServerAnswer SendCommand(ClientCommand command)
 		{
-			lock (_checkLocker)
-			{
-				var result = _commandSender.Request(command);
-				return result;
-			}
+			var result = _commandSender.Request(command);
+			return result;
 		}
 
 		private bool ExecuteAndCheckState(ClientCommand command)
@@ -153,7 +171,10 @@ namespace Donkey.Client
 			var command = new GetCurrentGameStateCommand(AuthData);
 			var answer = SendCommand(command);
 			if (answer.Success)
-				_currentGameState = ((CurrentGameStateAnswer)answer).GameState;
+			{
+				lock (_gameStateLocker)
+					_currentGameState = ((CurrentGameStateAnswer)answer).GameState;
+			}
 			return answer.Success;
 		}
 
@@ -172,9 +193,6 @@ namespace Donkey.Client
 
 		public bool Update()
 		{
-			if (!CheckState())
-				return false;
-
 			if (State != PlayerState.Game)
 				return false;
 
@@ -209,7 +227,7 @@ namespace Donkey.Client
 		public GameMove[] GetHistory(int fromIndex)
 		{
 			if (_history.Count - 1 <= fromIndex)
-				Update();
+				return new GameMove[0];
 			return _history.ToArray(fromIndex);
 		}
 

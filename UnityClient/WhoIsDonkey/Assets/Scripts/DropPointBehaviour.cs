@@ -9,7 +9,7 @@ public class DropPointBehaviour : MonoBehaviour
 	private GameObject _dropPoint;
 	private Coroutine _coroutine;
 
-	public int CheckInterval = 1;
+	public float CheckInterval = 1f;
 
 	void Start()
 	{
@@ -53,8 +53,12 @@ public class DropPointBehaviour : MonoBehaviour
 			if (currentStep <= GameClientManager.Current.CurrentGameStep)
 			{
 				var moves = history.ToArray(currentStep);
-				PlayMove(moves[0]);
-				currentStep++;
+				for (int i = 0; i < moves.Length; i++)
+				{
+					PlayMove(moves[i]);
+					currentStep++;
+					yield return new WaitForSeconds(CheckInterval / 3);
+				}
 			}
 		}
 	}
@@ -83,7 +87,7 @@ public class DropPointBehaviour : MonoBehaviour
 		{
 			var cardObj = CardHelper.CreateCardObject(card);
 			CardHelper.DropCard(cardObj);
-			SetAproxRotattion(cardObj);
+			SetAproxRotation(cardObj);
 		}
 	}
 
@@ -98,7 +102,7 @@ public class DropPointBehaviour : MonoBehaviour
 		}
 	}
 
-	private void SetAproxRotattion(GameObject cardObj)
+	private void SetAproxRotation(GameObject cardObj)
 	{
 		cardObj.transform.LookAt(Camera.main.transform);
 		cardObj.transform.Rotate(90, 0, 0);
